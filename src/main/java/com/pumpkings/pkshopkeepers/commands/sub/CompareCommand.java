@@ -51,8 +51,8 @@ public class CompareCommand implements Command<CommandSourceStack> {
             for (int i = 0; i < offers.size(); i++) {
                 PkTradeOffer offer = offers.get(i);
                 
-                checkMatch(player, invItem, offer.getItem1(), i, "Item 1");
-                checkMatch(player, invItem, offer.getItem2(), i, "Item 2");
+                checkMatch(player, invItem, offer.getItem1(), i, "Item 1", shop.getId());
+                checkMatch(player, invItem, offer.getItem2(), i, "Item 2", shop.getId());
             }
         }
 
@@ -60,7 +60,7 @@ public class CompareCommand implements Command<CommandSourceStack> {
         return Command.SINGLE_SUCCESS;
     }
 
-    private void checkMatch(Player player, ItemStack invItem, ItemStack shopItem, int tradeIndex, String slotName) {
+    private void checkMatch(Player player, ItemStack invItem, ItemStack shopItem, int tradeIndex, String slotName, String shopId) {
         if (shopItem == null || shopItem.getType() == Material.AIR) return;
         
         if (invItem.getType() != shopItem.getType()) return;
@@ -89,29 +89,35 @@ public class CompareCommand implements Command<CommandSourceStack> {
         }
         
         if (invMeta != null && shopMeta != null) {
+            boolean foundDifference = false;
             String invName = invMeta.hasDisplayName() ? LegacyComponentSerializer.legacyAmpersand().serialize(invMeta.displayName()) : "Ninguno";
             String shopName = shopMeta.hasDisplayName() ? LegacyComponentSerializer.legacyAmpersand().serialize(shopMeta.displayName()) : "Ninguno";
             if (!invName.equals(shopName)) {
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-name"));
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-name-you", "%you%", invName));
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-name-shop", "%shop%", shopName));
+                foundDifference = true;
             }
             
             if (invMeta.hasCustomModelData() != shopMeta.hasCustomModelData()) {
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-cmd"));
+                foundDifference = true;
             } else if (invMeta.hasCustomModelData() && invMeta.getCustomModelData() != shopMeta.getCustomModelData()) {
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-cmd-diff", "%you%", String.valueOf(invMeta.getCustomModelData()), "%shop%", String.valueOf(shopMeta.getCustomModelData())));
+                foundDifference = true;
             }
 
             boolean invHasLore = invMeta.hasLore();
             boolean shopHasLore = shopMeta.hasLore();
             if (invHasLore != shopHasLore) {
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-lore-exists"));
+                foundDifference = true;
             } else if (invHasLore) {
                 List<Component> invLore = invMeta.lore();
                 List<Component> shopLore = shopMeta.lore();
                 if (invLore.size() != shopLore.size()) {
                     player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-lore-size", "%you%", String.valueOf(invLore.size()), "%shop%", String.valueOf(shopLore.size())));
+                    foundDifference = true;
                 } else {
                     for (int i = 0; i < invLore.size(); i++) {
                         String invLine = LegacyComponentSerializer.legacyAmpersand().serialize(invLore.get(i));
@@ -120,6 +126,7 @@ public class CompareCommand implements Command<CommandSourceStack> {
                             player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-lore-line", "%line%", String.valueOf(i + 1)));
                             player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-lore-you", "%you%", invLine));
                             player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-lore-shop", "%shop%", shopLine));
+                            foundDifference = true;
                         }
                     }
                 }
@@ -127,6 +134,12 @@ public class CompareCommand implements Command<CommandSourceStack> {
             
             if (!invMeta.getEnchants().equals(shopMeta.getEnchants())) {
                 player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-enchants"));
+                foundDifference = true;
+            }
+            
+            if (!foundDifference) {
+                player.sendMessage(Component.text("  §c¡La diferencia está oculta en atributos o NBT/Componentes 1.21!"));
+                player.sendMessage(Component.text("  §7Usa §e/pks fix " + shopId + " " + (tradeIndex + 1) + " " + slotName.toLowerCase().replace(" ", "") + " §7mientras sostienes este ítem en la mano para sobreescribirlo en la tienda y solucionar el problema."));
             }
         }
     }

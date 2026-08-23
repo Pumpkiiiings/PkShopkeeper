@@ -126,6 +126,7 @@ public class CommandManager {
             var fixAllSub = Commands.literal("fixall")
                     .then(Commands.argument("id", StringArgumentType.word())
                         .suggests((ctx, builder) -> {
+                            builder.suggest("all");
                             for (com.pumpkings.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
                                 builder.suggest(shop.getId());
                             }

@@ -39,6 +39,12 @@ public class CommandManager {
 
             var openSub = Commands.literal("open")
                     .then(Commands.argument("id", com.mojang.brigadier.arguments.StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            for (com.nisovin.shopkeepers.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest(shop.getId());
+                            }
+                            return builder.buildFuture();
+                        })
                         .then(Commands.argument("player", com.mojang.brigadier.arguments.StringArgumentType.word())
                             .suggests((ctx, builder) -> {
                                 for (org.bukkit.entity.Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
@@ -70,21 +76,51 @@ public class CommandManager {
 
             var linkSub = Commands.literal("link")
                     .then(Commands.argument("shop", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            for (com.nisovin.shopkeepers.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest(shop.getId());
+                            }
+                            return builder.buildFuture();
+                        })
                     .then(Commands.argument("npc", StringArgumentType.word())
                     .executes(new LinkCommand(plugin))));
                     
             var unlinkSub = Commands.literal("unlink")
                     .then(Commands.argument("shop", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            for (com.nisovin.shopkeepers.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest(shop.getId());
+                            }
+                            return builder.buildFuture();
+                        })
                     .executes(new UnlinkCommand(plugin)));
 
             var compareSub = Commands.literal("compare")
                     .then(Commands.argument("id", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            for (com.nisovin.shopkeepers.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest(shop.getId());
+                            }
+                            return builder.buildFuture();
+                        })
                     .executes(new CompareCommand(plugin)));
 
             var fixSub = Commands.literal("fix")
                     .then(Commands.argument("id", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            for (com.nisovin.shopkeepers.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest(shop.getId());
+                            }
+                            return builder.buildFuture();
+                        })
                     .then(Commands.argument("tradeIndex", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
                     .then(Commands.argument("action", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            builder.suggest("item1");
+                            builder.suggest("item2");
+                            builder.suggest("result");
+                            return builder.buildFuture();
+                        })
                     .executes(new FixCommand(plugin)))));
                     
             var simplifyIdsSub = Commands.literal("simplifyids")

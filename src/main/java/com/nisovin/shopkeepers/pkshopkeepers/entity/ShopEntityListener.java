@@ -40,18 +40,34 @@ public class ShopEntityListener implements Listener {
 
     @EventHandler
     public void onChunkLoad(org.bukkit.event.world.ChunkLoadEvent event) {
+        String worldName = event.getChunk().getWorld().getName();
+        int chunkX = event.getChunk().getX();
+        int chunkZ = event.getChunk().getZ();
+        
         for (PkShop shop : shopManager.getShops()) {
-            if (shop.getLocation() != null && shop.getLocation().getChunk().equals(event.getChunk())) {
-                spawnShop(shop);
+            if (shop.getLocation() != null && shop.getLocation().getWorld().getName().equals(worldName)) {
+                int shopChunkX = shop.getLocation().getBlockX() >> 4;
+                int shopChunkZ = shop.getLocation().getBlockZ() >> 4;
+                if (shopChunkX == chunkX && shopChunkZ == chunkZ) {
+                    spawnShop(shop);
+                }
             }
         }
     }
 
     @EventHandler
     public void onChunkUnload(org.bukkit.event.world.ChunkUnloadEvent event) {
+        String worldName = event.getChunk().getWorld().getName();
+        int chunkX = event.getChunk().getX();
+        int chunkZ = event.getChunk().getZ();
+        
         for (PkShop shop : shopManager.getShops()) {
-            if (shop.getLocation() != null && shop.getLocation().getChunk().equals(event.getChunk())) {
-                removeEntity(shop);
+            if (shop.getLocation() != null && shop.getLocation().getWorld().getName().equals(worldName)) {
+                int shopChunkX = shop.getLocation().getBlockX() >> 4;
+                int shopChunkZ = shop.getLocation().getBlockZ() >> 4;
+                if (shopChunkX == chunkX && shopChunkZ == chunkZ) {
+                    removeEntity(shop);
+                }
             }
         }
     }

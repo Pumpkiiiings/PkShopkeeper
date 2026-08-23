@@ -94,6 +94,13 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
+        java.util.UUID uuid = event.getPlayer().getUniqueId();
+        shopManager.getEditingPlayers().remove(uuid);
+        shopManager.getRenamingPlayers().remove(uuid);
+    }
+
     @Override
     public void onDisable() {
         if (shopManager != null) {

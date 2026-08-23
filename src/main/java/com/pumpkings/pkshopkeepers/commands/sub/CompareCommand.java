@@ -137,11 +137,33 @@ public class CompareCommand implements Command<CommandSourceStack> {
                 foundDifference = true;
             }
             
+            if (invMeta.isUnbreakable() != shopMeta.isUnbreakable()) {
+                player.sendMessage("§c  - Diferencia: Etiqueta Irrompible (Unbreakable)");
+                player.sendMessage("§7    Tu ítem: §e" + invMeta.isUnbreakable() + " §7| Tienda: §e" + shopMeta.isUnbreakable());
+                foundDifference = true;
+            }
+            
+            if (!invMeta.getItemFlags().equals(shopMeta.getItemFlags())) {
+                player.sendMessage("§c  - Diferencia: Banderas ocultas (ItemFlags / HideFlags)");
+                foundDifference = true;
+            }
+            
+            if (invMeta.hasAttributeModifiers() != shopMeta.hasAttributeModifiers()) {
+                player.sendMessage("§c  - Diferencia: Modificadores de Atributos");
+                foundDifference = true;
+            } else if (invMeta.hasAttributeModifiers() && shopMeta.hasAttributeModifiers() && !invMeta.getAttributeModifiers().equals(shopMeta.getAttributeModifiers())) {
+                player.sendMessage("§c  - Diferencia: Valores de los Modificadores de Atributos");
+                foundDifference = true;
+            }
+            
+            if (!invMeta.getPersistentDataContainer().getKeys().equals(shopMeta.getPersistentDataContainer().getKeys())) {
+                player.sendMessage("§c  - Diferencia: NBT/Datos de otros plugins (PersistentDataContainer)");
+                foundDifference = true;
+            }
+
             if (!foundDifference) {
-                player.sendMessage(Component.text("  §c¡La diferencia está en Atributos/Componentes 1.21!"));
-                player.sendMessage(Component.text("  §7Tu ítem: §8" + invMeta.getAsString()));
-                player.sendMessage(Component.text("  §7Tienda : §8" + shopMeta.getAsString()));
-                player.sendMessage(Component.text("  §7Usa §e/pks fix " + shopId + " " + (tradeIndex + 1) + " " + slotName.toLowerCase().replace(" ", "") + " §7mientras sostienes este ítem en la mano para sobreescribirlo en la tienda y solucionar el problema."));
+                player.sendMessage(Component.text("  §c¡La diferencia está en Componentes 1.21 muy específicos!"));
+                player.sendMessage(Component.text("  §7(Usa §e/pks fix " + shopId + " " + (tradeIndex + 1) + " " + slotName.toLowerCase().replace(" ", "") + " §7para solucionarlo rápidamente)"));
             }
         }
     }

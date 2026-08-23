@@ -1,0 +1,88 @@
+messages:
+  prefix: "<bold><gradient:#FFD700:#FF8C00>PKSHOPKEEPERS</gradient></bold> <#555555>| <reset>"
+  no-permission: "<#FF0055>No tienes permiso para hacer eso."
+  only-players: "<#FF0055>Solo los jugadores pueden ejecutar este comando."
+  shop-created: "<#00FF77>Tienda creada. Usa Shift+Clic Derecho para editarla."
+  shop-deleted: "<#FF0055>Tienda eliminada."
+  shops-deleted: "<#00FF77>Se han eliminado <white>%count% <#00FF77>tiendas cercanas."
+  player-not-found: "<#FF0055>Jugador no encontrado."
+  shop-not-found: "<#FF0055>Tienda no encontrada."
+  opening-shop: "<#00FF77>Abriendo tienda <white>%id% <#00FF77>para <white>%player%"
+  shop-saved: "<#00FF77>Tienda guardada exitosamente."
+  name-changed: "<#00FF77>Nombre cambiado a: <white>%name%"
+  enter-name: "<#FFE300>Escribe el nuevo nombre en el chat <#AAAAAA>(soporta MiniMessage):"
+  reloaded: "<#00FF77>Tiendas y configuración recargadas."
+  
+  compare-title: "<#555555><strikethrough>             </strikethrough> <bold><gradient:#FFE300:#FFAA00>Análisis de Inventario vs Tienda %name%</gradient></bold> <#555555><strikethrough>             </strikethrough>"
+  compare-footer: "<#555555><strikethrough>                                                                       </strikethrough>"
+  compare-exact: "<#555555>[<#AAAAAA>Trade #%trade% <#555555>| <#AAAAAA>%slot%<#555555>] <#00FF77>Tienes el ítem exacto y cantidad suficiente."
+  compare-amount: "<#555555>[<#AAAAAA>Trade #%trade% <#555555>| <#AAAAAA>%slot%<#555555>] <#FF0055>Ítem exacto pero falta cantidad <#555555>(<#AAAAAA>Tienes <white>%has%<#AAAAAA>, pide <white>%needs%<#555555>)."
+  compare-reason-header: "<#555555>[<#AAAAAA>Trade #%trade% <#555555>| <#AAAAAA>%slot%<#555555>] <#AAAAAA>Analizando diferencias para: <#00FFFF>%item%"
+  compare-no-meta: "  <#FF0055>Razón: <#AAAAAA>Tu ítem no tiene Meta, pero la tienda sí."
+  compare-has-meta: "  <#FF0055>Razón: <#AAAAAA>Tu ítem tiene Meta, pero la tienda no."
+  compare-name: "  <#FF0055>Razón: <#AAAAAA>Nombre diferente."
+  compare-name-you: "    <#555555>» <#AAAAAA>Tu ítem: <white>%you%"
+  compare-name-shop: "    <#555555>» <#AAAAAA>Tienda: <white>%shop%"
+  compare-cmd: "  <#FF0055>Razón: <#AAAAAA>Diferencia en CustomModelData."
+  compare-cmd-diff: "  <#FF0055>Razón: <#AAAAAA>CustomModelData diferente <#555555>(<#AAAAAA>Tu: <white>%you% <#555555>| <#AAAAAA>Tienda: <white>%shop%<#555555>)."
+  compare-lore-exists: "  <#FF0055>Razón: <#AAAAAA>Diferencia de existencia de Lore."
+  compare-lore-size: "  <#FF0055>Razón: <#AAAAAA>Cantidad de líneas de Lore distinta <#555555>(<#AAAAAA>Tu: <white>%you% <#555555>| <#AAAAAA>Tienda: <white>%shop%<#555555>)."
+  compare-lore-line: "  <#FF0055>Razón: <#AAAAAA>Lore línea <white>%line% <#AAAAAA>distinta."
+  compare-lore-you: "    <#555555>» <#AAAAAA>Tu: <white>%you%"
+  compare-lore-shop: "    <#555555>» <#AAAAAA>Tienda: <white>%shop%"
+  compare-enchants: "  <#FF0055>Razón: <#AAAAAA>Los encantamientos no coinciden."
+  
+  fix-invalid-index: "<#FF0055>Índice de tradeo inválido."
+  fix-to-inv: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>Los ítems requeridos por el tradeo <white>#%trade% <#AAAAAA>han sido añadidos a tu inventario."
+  fix-no-main-hand: "<#FF0055>Debes tener un ítem en tu mano principal para fijarlo como Item 1."
+  fix-to-shop: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>El tradeo <white>#%trade% <#AAAAAA>ha sido actualizado con los ítems de tus manos."
+  fix-invalid-action: "<#FF0055>Acción inválida. Usa 'to_shop' o 'to_inv'."
+  
+  type-changed: "<#00FF77>Tipo cambiado a <white>%type%"
+  baby-state: "<#00FF77>Estado de bebé: <white>%state%"
+  coming-soon: "<#FF0055>Próximamente..."
+  scan-no-plugin: "<#FF0055>El plugin Shopkeepers original no está instalado o activo. No se puede escanear."
+  migrate-no-plugin: "<#FF0055>El plugin Shopkeepers original no está instalado o activo. No se puede migrar."
+
+menus:
+  main-menu-title: "<#555555>Panel de control - %id%"
+  editor-title: "<#555555>Editor de Tienda"
+  selector-title: "<#555555>Seleccionar Entidad"
+  rename-prompt: "&e[PkShopkeepers] Escribe el nuevo nombre en el chat (soporta & para colores):"
+  
+  btn-edit-trades: "<bold><#FFE300>Editar Tradeos</bold>"
+  btn-change-name: "<bold><#00FFFF>Cambiar Nombre</bold>"
+  btn-change-type: "<bold><#FFBB00>Cambiar Tipo de Entidad</bold>"
+  btn-delete-shop: "<bold><#FF0055>Eliminar Tienda</bold>"
+  btn-save: "<bold><#00FF77>Guardar y Aplicar</bold>"
+  btn-next-page: "<bold><#00FF77>Página Siguiente ></bold>"
+  btn-prev-page: "<bold><#FFFF00>< Página Anterior</bold>"
+  btn-baby-toggle: "<bold><#FFE300>Alternar Bebé/Adulto</bold>"
+  btn-change-prof: "<bold><#33CCFF>Cambiar Profesión</bold> <#AAAAAA>(Próximamente)"
+  btn-back: "<bold><#FF0055>Volver</bold>"
+
+settings:
+  # Silenciar por completo a las entidades de las tiendas
+  silence-shop-entities: true
+  
+  # Si el nombre de la tienda siempre es visible a través de las paredes
+  always-show-nameplates: false
+  
+  # Si las entidades no se ven afectadas por la gravedad (flotan)
+  disable-gravity: false
+  
+  # Lista de entidades permitidas para las tiendas
+  enabled-living-shops:
+    - VILLAGER
+    - ZOMBIE
+    - SKELETON
+    - WITCH
+    - PIGLIN
+    - COW
+    - SHEEP
+    - PIG
+    - CREEPER
+    - IRON_GOLEM
+    - SNOW_GOLEM
+    - SLIME
+    - MAGMA_CUBE

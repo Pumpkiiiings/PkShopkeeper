@@ -69,8 +69,35 @@ public class FixCommand implements Command<CommandSourceStack> {
             
             plugin.getShopManager().saveShops();
             player.sendMessage(plugin.getConfigManager().getMessage("fix-to-shop", "%trade%", String.valueOf(tradeIndex + 1)));
+        } else if (action.equalsIgnoreCase("item1")) {
+            ItemStack mainHand = player.getInventory().getItemInMainHand();
+            if (mainHand.getType() == Material.AIR) {
+                player.sendMessage(plugin.getConfigManager().getMessage("fix-no-main-hand"));
+                return 0;
+            }
+            offer.setItem1(mainHand.clone());
+            plugin.getShopManager().saveShops();
+            player.sendMessage("§a[PkShopkeepers] §fEl ítem 1 del trade §e" + (tradeIndex + 1) + " §fha sido sobreescrito con el de tu mano.");
+        } else if (action.equalsIgnoreCase("item2")) {
+            ItemStack mainHand = player.getInventory().getItemInMainHand();
+            if (mainHand.getType() == Material.AIR) {
+                player.sendMessage(plugin.getConfigManager().getMessage("fix-no-main-hand"));
+                return 0;
+            }
+            offer.setItem2(mainHand.clone());
+            plugin.getShopManager().saveShops();
+            player.sendMessage("§a[PkShopkeepers] §fEl ítem 2 del trade §e" + (tradeIndex + 1) + " §fha sido sobreescrito con el de tu mano.");
+        } else if (action.equalsIgnoreCase("result")) {
+            ItemStack mainHand = player.getInventory().getItemInMainHand();
+            if (mainHand.getType() == Material.AIR) {
+                player.sendMessage(plugin.getConfigManager().getMessage("fix-no-main-hand"));
+                return 0;
+            }
+            offer.setResult(mainHand.clone());
+            plugin.getShopManager().saveShops();
+            player.sendMessage("§a[PkShopkeepers] §fEl resultado del trade §e" + (tradeIndex + 1) + " §fha sido sobreescrito con el de tu mano.");
         } else {
-            player.sendMessage(plugin.getConfigManager().getMessage("fix-invalid-action"));
+            player.sendMessage("§c[PkShopkeepers] | Acción inválida. Usa 'to_shop', 'to_inv', 'item1', 'item2' o 'result'.");
         }
 
         return Command.SINGLE_SUCCESS;

@@ -123,6 +123,16 @@ public class CommandManager {
                         })
                     .executes(new FixCommand(plugin)))));
                     
+            var fixAllSub = Commands.literal("fixall")
+                    .then(Commands.argument("id", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            for (com.pumpkings.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest(shop.getId());
+                            }
+                            return builder.buildFuture();
+                        })
+                    .executes(new FixAllCommand(plugin)));
+                    
             var simplifyIdsSub = Commands.literal("simplifyids")
                     .executes(new SimplifyIdsCommand(plugin));
                     
@@ -140,6 +150,7 @@ public class CommandManager {
             rootCommand.then(unlinkSub);
             rootCommand.then(compareSub);
             rootCommand.then(fixSub);
+            rootCommand.then(fixAllSub);
             rootCommand.then(simplifyIdsSub);
             rootCommand.then(whoisSub);
 

@@ -138,7 +138,9 @@ public class CompareCommand implements Command<CommandSourceStack> {
             }
             
             if (!foundDifference) {
-                player.sendMessage(Component.text("  §c¡La diferencia está oculta en atributos o NBT/Componentes 1.21!"));
+                player.sendMessage(Component.text("  §c¡La diferencia está en Atributos/Componentes 1.21!"));
+                player.sendMessage(Component.text("  §7Tu ítem: §8" + invMeta.getAsString()));
+                player.sendMessage(Component.text("  §7Tienda : §8" + shopMeta.getAsString()));
                 player.sendMessage(Component.text("  §7Usa §e/pks fix " + shopId + " " + (tradeIndex + 1) + " " + slotName.toLowerCase().replace(" ", "") + " §7mientras sostienes este ítem en la mano para sobreescribirlo en la tienda y solucionar el problema."));
             }
         }

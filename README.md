@@ -31,6 +31,24 @@ All commands require the `pkshopkeepers.admin` permission.
 - `/pks migrate start` - Starts the migration process from the original Shopkeepers plugin.
 - `/pks reload` - Reloads the configuration.
 
+## Troubleshooting Custom Items
+
+When using custom items (items with custom lore, enchants, CustomModelData, or 1.21 Data Components), sometimes a shop won't accept an item that looks identical to the player. PkShopkeepers provides built-in tools to diagnose and fix these issues:
+
+1. **Diagnose the issue:**
+   Hold the problematic item in your inventory and run `/pks compare <id>`. The plugin will scan your inventory and compare it against the shop's requirements. It will print a detailed report in chat explaining exactly why the item is being rejected (e.g., mismatching Lore line, different CustomModelData, hidden attributes, etc.).
+
+2. **Fix the issue:**
+   If you want to update the shop to accept the exact item you are holding, hold the item in your main hand and use the `/pks fix` command:
+   ```text
+   /pks fix <id> <tradeIndex> <action>
+   ```
+   - `<id>`: The ID of the shop (e.g., `1`).
+   - `<tradeIndex>`: The trade number you want to fix (e.g., `1` for the first trade, `2` for the second).
+   - `<action>`: Which slot to overwrite in that trade. Options are `item1` (first requirement), `item2` (second requirement), or `result` (what the player gets).
+
+   *Example:* `/pks fix 1 3 item1` will overwrite the first required item of trade #3 in shop ID 1 with the item currently in your hand.
+
 ## Migration Guide
 
 Migrating from the original Shopkeepers plugin is incredibly easy:

@@ -87,8 +87,12 @@ public class ShopManager {
     }
 
     public void removeShop(String id) {
+        removeShop(id, true);
+    }
+    
+    public void removeShop(String id, boolean save) {
         shops.remove(id);
-        saveShops();
+        if (save) saveShops();
     }
 
     public Map<java.util.UUID, PkShop> getEditingPlayers() {

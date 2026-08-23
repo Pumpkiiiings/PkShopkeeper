@@ -40,7 +40,7 @@ public class SimplifyIdsCommand implements Command<CommandSourceStack> {
         
         int count = 0;
         for (PkShop shop : shopsToConvert) {
-            manager.removeShop(shop.getId());
+            manager.removeShop(shop.getId(), false);
             
             String newId = manager.getNextId();
             shop.setId(newId);

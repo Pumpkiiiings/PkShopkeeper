@@ -45,7 +45,11 @@ public class FixAllCommand implements Command<CommandSourceStack> {
             }
             if (totalFixed > 0) {
                 plugin.getShopManager().saveShops();
-                player.sendMessage("§a[PkShopkeepers] §fSe han actualizado §e" + totalFixed + " §fítems a través de §a" + shopsFixed + " §ftiendas en todo el servidor.");
+                player.sendMessage("§8§m----------------------------------------");
+                player.sendMessage("§a§lResultado Final:");
+                player.sendMessage("§7Tradeos arreglados: §e" + totalFixed);
+                player.sendMessage("§7Tiendas afectadas: §e" + shopsFixed);
+                player.sendMessage("§8§m----------------------------------------");
             } else {
                 player.sendMessage("§c[PkShopkeepers] No se encontraron coincidencias para actualizar en ninguna tienda.");
             }
@@ -63,7 +67,11 @@ public class FixAllCommand implements Command<CommandSourceStack> {
 
         if (fixedCount > 0) {
             plugin.getShopManager().saveShops();
-            player.sendMessage("§a[PkShopkeepers] §fSe han actualizado §e" + fixedCount + " §fítems de la tienda §a" + shop.getName() + " §fcoincidiendo con los de tu inventario.");
+            player.sendMessage("§8§m----------------------------------------");
+            player.sendMessage("§a§lResultado Final:");
+            player.sendMessage("§7Tradeos arreglados: §e" + fixedCount);
+            player.sendMessage("§7Tienda afectada: §e" + shop.getName());
+            player.sendMessage("§8§m----------------------------------------");
         } else {
             player.sendMessage("§c[PkShopkeepers] No se encontraron ítems en tu inventario con el mismo Material y Nombre Exacto que los de la tienda para actualizar.");
         }

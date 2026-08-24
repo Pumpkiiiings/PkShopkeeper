@@ -35,7 +35,7 @@ public class GiveCommand implements Command<CommandSourceStack> {
         });
 
         player.getInventory().addItem(egg);
-        player.sendMessage(plugin.getConfigManager().parseString("&aSe te ha dado un huevo para crear tiendas."));
+        player.sendMessage(plugin.getConfigManager().getMessage("given-egg"));
         
         return Command.SINGLE_SUCCESS;
     }

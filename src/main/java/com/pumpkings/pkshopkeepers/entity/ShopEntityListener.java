@@ -1,7 +1,9 @@
 package com.pumpkings.pkshopkeepers.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -18,6 +20,8 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
+import com.pumpkings.pkshopkeepers.api.events.ShopOpenEvent;
+import com.pumpkings.pkshopkeepers.api.events.ShopTradeEvent;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
 import com.pumpkings.pkshopkeepers.shop.PkTradeOffer;
 import com.pumpkings.pkshopkeepers.shop.ShopManager;
@@ -28,6 +32,7 @@ public class ShopEntityListener implements Listener {
 
     private final PkShopkeepers plugin;
     private final ShopManager shopManager;
+    private final Map<UUID, PkShop> activeShopViewers = new HashMap<>();
 
     public ShopEntityListener(PkShopkeepers plugin, ShopManager shopManager) {
         this.plugin = plugin;
@@ -84,7 +89,7 @@ public class ShopEntityListener implements Listener {
     }
 
     public void spawnShop(PkShop shop) {
-        if (shop.getFancyNpcId() != null) return;
+        if (shop.getNpcId() != null) return;
         
         Location loc = shop.getLocation();
         if (loc == null || loc.getWorld() == null) return;
@@ -95,11 +100,14 @@ public class ShopEntityListener implements Listener {
                 found = true;
                 if (e instanceof org.bukkit.entity.LivingEntity) {
                     org.bukkit.entity.LivingEntity le = (org.bukkit.entity.LivingEntity) e;
-                    le.setAI(false);
+                    le.setAI(true);
+                    le.setCollidable(false);
+                    org.bukkit.attribute.AttributeInstance speed = le.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED);
+                    if (speed != null) speed.setBaseValue(0.0);
                     le.setInvulnerable(true);
                     le.setSilent(true);
-                    e.setCustomName(shop.getName());
-                    e.setCustomNameVisible(true);
+                    e.customName(plugin.getConfigManager().parseString(shop.getName()));
+                    e.setCustomNameVisible(plugin.getConfigManager().getBoolean("settings.always-show-nameplates", false));
                 }
                 break;
             }
@@ -109,7 +117,10 @@ public class ShopEntityListener implements Listener {
             Entity entity = shop.getLocation().getWorld().spawnEntity(shop.getLocation(), shop.getEntityType());
             if (entity instanceof org.bukkit.entity.LivingEntity) {
                 org.bukkit.entity.LivingEntity le = (org.bukkit.entity.LivingEntity) entity;
-                le.setAI(false);
+                le.setAI(true);
+                le.setCollidable(false);
+                org.bukkit.attribute.AttributeInstance speed = le.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED);
+                if (speed != null) speed.setBaseValue(0.0);
                 le.setInvulnerable(true);
                 entity.setCustomNameVisible(plugin.getConfigManager().getBoolean("settings.always-show-nameplates", false));
             }
@@ -131,34 +142,13 @@ public class ShopEntityListener implements Listener {
             }
 
             if (entity instanceof org.bukkit.entity.Villager) {
-                ((org.bukkit.entity.Villager) entity).setProfession(shop.getVillagerProfession());
+                org.bukkit.entity.Villager v = (org.bukkit.entity.Villager) entity;
+                v.setProfession(shop.getVillagerProfession());
+                v.setVillagerType(shop.getVillagerType());
+                v.setVillagerLevel(shop.getVillagerLevel());
             }
             
             shop.setEntityUUID(entity.getUniqueId());
-            
-            // Look At Player Logic
-            FoliaScheduler.runEntityTaskTimer(plugin, entity, () -> {
-                if (!entity.isValid() || entity.isDead()) return;
-                
-                org.bukkit.entity.Player nearest = null;
-                double closest = 25.0; // 5 blocks squared
-                for (org.bukkit.entity.Player p : entity.getWorld().getPlayers()) {
-                    if (p.getGameMode() == org.bukkit.GameMode.SPECTATOR) continue;
-                    double dist = p.getLocation().distanceSquared(entity.getLocation());
-                    if (dist < closest) {
-                        closest = dist;
-                        nearest = p;
-                    }
-                }
-                
-                if (nearest != null) {
-                    Location eLoc = entity.getLocation();
-                    Location pLoc = nearest.getLocation().add(0, nearest.getEyeHeight(), 0);
-                    org.bukkit.util.Vector dir = pLoc.toVector().subtract(eLoc.clone().add(0, entity.getHeight(), 0).toVector());
-                    eLoc.setDirection(dir);
-                    entity.setRotation(eLoc.getYaw(), eLoc.getPitch());
-                }
-            }, 10L, 5L); // Every 5 ticks
         }
     }
 
@@ -221,6 +211,10 @@ public class ShopEntityListener implements Listener {
     }
 
     public void openShop(Player player, PkShop shop) {
+        ShopOpenEvent openEvent = new ShopOpenEvent(player, shop);
+        Bukkit.getPluginManager().callEvent(openEvent);
+        if (openEvent.isCancelled()) return;
+
         Merchant merchant = Bukkit.createMerchant(shop.getName());
         List<MerchantRecipe> recipes = new ArrayList<>();
         
@@ -236,5 +230,42 @@ public class ShopEntityListener implements Listener {
         
         merchant.setRecipes(recipes);
         player.openMerchant(merchant, true);
+        activeShopViewers.put(player.getUniqueId(), shop);
+    }
+
+    @EventHandler
+    public void onInventoryClose(org.bukkit.event.inventory.InventoryCloseEvent event) {
+        activeShopViewers.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onTradeClick(org.bukkit.event.inventory.InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        
+        if (event.getInventory() instanceof org.bukkit.inventory.MerchantInventory merchantInv) {
+            PkShop shop = activeShopViewers.get(player.getUniqueId());
+            if (shop == null) return;
+            
+            if (event.getRawSlot() == 2 && event.getCurrentItem() != null && event.getCurrentItem().getType() != org.bukkit.Material.AIR) {
+                // Determine which trade is selected
+                org.bukkit.inventory.MerchantRecipe recipe = merchantInv.getSelectedRecipe();
+                int index = -1;
+                if (recipe != null) {
+                    for (int i = 0; i < merchantInv.getMerchant().getRecipes().size(); i++) {
+                        if (merchantInv.getMerchant().getRecipes().get(i).equals(recipe)) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+                
+                ShopTradeEvent tradeEvent = new ShopTradeEvent(player, shop, event.getCurrentItem(), index);
+                Bukkit.getPluginManager().callEvent(tradeEvent);
+                
+                if (tradeEvent.isCancelled()) {
+                    event.setCancelled(true);
+                }
+            }
+        }
     }
 }

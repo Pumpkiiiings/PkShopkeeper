@@ -7,6 +7,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.Plugin;
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.commands.sub.*;
+import com.pumpkings.pkshopkeepers.commands.sub.FixTradersCommand;
 
 @SuppressWarnings("UnstableApiUsage")
 public class CommandManager {
@@ -134,8 +135,8 @@ public class CommandManager {
                         })
                     .executes(new FixAllCommand(plugin)));
                     
-            var simplifyIdsSub = Commands.literal("simplifyids")
-                    .executes(new SimplifyIdsCommand(plugin));
+            var fixTradersSub = Commands.literal("fixtraders")
+                    .executes(new FixTradersCommand(plugin));
                     
             var whoisSub = Commands.literal("whois")
                     .executes(new WhoisCommand(plugin));
@@ -152,7 +153,7 @@ public class CommandManager {
             rootCommand.then(compareSub);
             rootCommand.then(fixSub);
             rootCommand.then(fixAllSub);
-            rootCommand.then(simplifyIdsSub);
+            rootCommand.then(fixTradersSub);
             rootCommand.then(whoisSub);
 
             commands.register(rootCommand.build(), "PkShopkeepers main command", java.util.List.of("pks"));

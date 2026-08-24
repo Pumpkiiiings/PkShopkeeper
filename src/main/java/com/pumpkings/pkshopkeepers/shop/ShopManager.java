@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
+import com.pumpkings.pkshopkeepers.api.events.ShopCreateEvent;
+import com.pumpkings.pkshopkeepers.api.events.ShopDeleteEvent;
 
 public class ShopManager {
 
@@ -63,6 +67,7 @@ public class ShopManager {
 
     public void addShop(PkShop shop) {
         shops.put(shop.getId(), shop);
+        Bukkit.getPluginManager().callEvent(new ShopCreateEvent(shop));
     }
     
     public String getNextId() {
@@ -91,7 +96,10 @@ public class ShopManager {
     }
     
     public void removeShop(String id, boolean save) {
-        shops.remove(id);
+        PkShop shop = shops.remove(id);
+        if (shop != null) {
+            Bukkit.getPluginManager().callEvent(new ShopDeleteEvent(shop));
+        }
         if (save) saveShops();
     }
 

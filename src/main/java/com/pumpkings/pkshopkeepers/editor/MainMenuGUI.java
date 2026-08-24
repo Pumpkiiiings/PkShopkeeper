@@ -17,7 +17,6 @@ import com.pumpkings.pkshopkeepers.shop.PkShop;
 public class MainMenuGUI implements Listener {
 
     private final PkShopkeepers plugin;
-    private final String TITLE = "§8Panel de Control";
 
     public MainMenuGUI(PkShopkeepers plugin) {
         this.plugin = plugin;
@@ -25,18 +24,24 @@ public class MainMenuGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
-        String titleStr = plugin.getConfig().getString("menus.main-menu-title", "Panel de control - %id%");
+        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Panel de control - %id%");
         titleStr = titleStr.replace("%id%", shop.getId());
         
-        Component title = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(titleStr);
+        Component title = plugin.getConfigManager().parseString(titleStr);
         Inventory inv = Bukkit.createInventory(null, 27, title);
         
         plugin.getShopManager().getEditingPlayers().put(player.getUniqueId(), shop);
 
-        inv.setItem(10, createItem(Material.CHEST, plugin.getConfigManager().getMenuComponent("btn-edit-trades"), "§7Abre el menú para añadir", "§7o quitar monedas e items."));
-        inv.setItem(12, createItem(Material.NAME_TAG, plugin.getConfigManager().getMenuComponent("btn-change-name"), "§7Renombra a " + shop.getName()));
-        inv.setItem(14, createItem(Material.ZOMBIE_HEAD, plugin.getConfigManager().getMenuComponent("btn-change-type"), "§7Actualmente: §a" + shop.getEntityType().name(), "§7Bebé: §a" + (shop.isBaby() ? "Sí" : "No")));
-        inv.setItem(16, createItem(Material.BARRIER, plugin.getConfigManager().getMenuComponent("btn-delete-shop"), "§7Borrará la tienda permanentemente."));
+        inv.setItem(10, createItem(Material.CHEST, plugin.getConfigManager().getMenuComponent("main-menu.btn-edit-trades"), plugin.getConfigManager().getGuiStringList("main-menu.btn-edit-trades-lore").toArray(new String[0])));
+        inv.setItem(11, createItem(Material.NAME_TAG, plugin.getConfigManager().getMenuComponent("main-menu.btn-change-name"), plugin.getConfigManager().getGuiStringList("main-menu.btn-change-name-lore").stream().map(s -> s.replace("%name%", shop.getName())).toArray(String[]::new)));
+        inv.setItem(12, createItem(Material.ZOMBIE_HEAD, plugin.getConfigManager().getMenuComponent("main-menu.btn-change-type"), plugin.getConfigManager().getGuiStringList("main-menu.btn-change-type-lore").stream().map(s -> s.replace("%type%", shop.getEntityType().name()).replace("%baby%", shop.isBaby() ? "Sí" : "No")).toArray(String[]::new)));
+        
+        if (shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER) {
+            inv.setItem(14, createItem(Material.OAK_SAPLING, plugin.getConfigManager().getMenuComponent("main-menu.btn-villager-type"), plugin.getConfigManager().getGuiStringList("main-menu.btn-villager-type-lore").stream().map(s -> s.replace("%type%", shop.getVillagerType().name())).toArray(String[]::new)));
+            inv.setItem(15, createItem(Material.EMERALD, plugin.getConfigManager().getMenuComponent("main-menu.btn-villager-level"), plugin.getConfigManager().getGuiStringList("main-menu.btn-villager-level-lore").stream().map(s -> s.replace("%level%", String.valueOf(shop.getVillagerLevel()))).toArray(String[]::new)));
+        }
+        
+        inv.setItem(16, createItem(Material.BARRIER, plugin.getConfigManager().getMenuComponent("main-menu.btn-delete-shop"), plugin.getConfigManager().getGuiStringList("main-menu.btn-delete-shop-lore").toArray(new String[0])));
 
         player.openInventory(inv);
     }
@@ -60,29 +65,33 @@ public class MainMenuGUI implements Listener {
         PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
         if (shop == null) return;
         
-        String titleStr = plugin.getConfig().getString("menus.main-menu-title", "Panel de control - %id%");
+        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Panel de control - %id%");
         titleStr = titleStr.replace("%id%", shop.getId());
-        Component expectedTitle = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(titleStr);
         
-        if (!event.getView().title().equals(expectedTitle)) return;
+        Component title = plugin.getConfigManager().parseString(titleStr);
+        if (!event.getView().title().equals(title)) return;
         event.setCancelled(true);
         
         int slot = event.getRawSlot();
         if (slot == 10) {
             plugin.getShopEditorListener().openEditor(player, shop);
-        } else if (slot == 12) {
+        } else if (slot == 11) {
             player.closeInventory();
-            player.sendMessage(plugin.getConfig().getString("menus.rename-prompt", "§e[PkShopkeepers] Escribe el nuevo nombre en el chat (soporta & para colores):"));
+            player.sendMessage(plugin.getConfigManager().getMessage("enter-name"));
             plugin.getShopManager().getRenamingPlayers().put(player.getUniqueId(), shop);
-        } else if (slot == 14) {
+        } else if (slot == 12) {
             plugin.getEntitySelectorGUI().openMenu(player, shop);
+        } else if (slot == 14 && shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER) {
+            plugin.getVillagerTypeGUI().openMenu(player, shop);
+        } else if (slot == 15 && shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER) {
+            plugin.getVillagerLevelGUI().openMenu(player, shop);
         } else if (slot == 16) {
             player.closeInventory();
             plugin.getShopManager().removeShop(shop.getId());
             plugin.getServer().getScheduler().runTask(plugin, () -> {
                 plugin.getShopEntityListener().removeEntity(shop);
             });
-            player.sendMessage("§cTienda eliminada.");
+            player.sendMessage(plugin.getConfigManager().getMessage("shop-deleted"));
         }
     }
     

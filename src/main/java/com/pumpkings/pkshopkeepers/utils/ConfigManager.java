@@ -14,6 +14,8 @@ public class ConfigManager {
 
     private final PkShopkeepers plugin;
     private FileConfiguration config;
+    private org.bukkit.configuration.file.FileConfiguration guiConfig;
+    private java.io.File guiFile;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.builder()
             .character('&')
@@ -30,6 +32,12 @@ public class ConfigManager {
     public void loadConfig() {
         plugin.reloadConfig();
         config = plugin.getConfig();
+        
+        guiFile = new java.io.File(plugin.getDataFolder(), "guis.yml");
+        if (!guiFile.exists()) {
+            plugin.saveResource("guis.yml", false);
+        }
+        guiConfig = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(guiFile);
     }
 
     public Component getMessage(String path, String... placeholders) {
@@ -59,9 +67,17 @@ public class ConfigManager {
     }
 
     public Component getMenuComponent(String path) {
-        String message = config.getString("menus." + path, path);
+        String message = guiConfig.getString(path, path);
         // By default Adventure components are italic if not explicitly stated, we want to remove italic in menus
         return parseString(message).decoration(TextDecoration.ITALIC, false);
+    }
+
+    public String getGuiString(String path, String def) {
+        return guiConfig.getString(path, def);
+    }
+    
+    public List<String> getGuiStringList(String path) {
+        return guiConfig.getStringList(path);
     }
 
     public Component parseString(String text) {

@@ -23,7 +23,6 @@ import net.kyori.adventure.text.Component;
 public class ShopEditorListener implements Listener {
 
     private final PkShopkeepers plugin;
-    private final String INVENTORY_TITLE = "§8Editor de PkShop";
 
     public ShopEditorListener(PkShopkeepers plugin) {
         this.plugin = plugin;
@@ -35,7 +34,7 @@ public class ShopEditorListener implements Listener {
     }
 
     public void openEditor(Player player, PkShop shop, int page) {
-        Component title = plugin.getConfigManager().getMenuComponent("editor-title");
+        Component title = plugin.getConfigManager().getMenuComponent("editor.title");
         Inventory inv = Bukkit.createInventory(null, 54, title);
         
         for (int i = 0; i < 54; i++) {
@@ -45,9 +44,9 @@ public class ShopEditorListener implements Listener {
         }
 
         // Navigation
-        inv.setItem(45, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("btn-prev-page")));
-        inv.setItem(53, createItem(Material.EMERALD_BLOCK, plugin.getConfigManager().getMenuComponent("btn-save")));
-        inv.setItem(52, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("btn-next-page")));
+        inv.setItem(45, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("editor.btn-prev-page")));
+        inv.setItem(53, createItem(Material.EMERALD_BLOCK, plugin.getConfigManager().getMenuComponent("editor.btn-save")));
+        inv.setItem(52, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("editor.btn-next-page")));
 
         List<PkTradeOffer> offers = shop.getOffers();
         int startIndex = page * 10; // Max 10 per page to leave bottom row for navigation
@@ -92,7 +91,7 @@ public class ShopEditorListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        Component title = plugin.getConfigManager().getMenuComponent("editor-title");
+        Component title = plugin.getConfigManager().getMenuComponent("editor.title");
         if (!event.getView().title().equals(title)) return;
         
         int slot = event.getRawSlot();
@@ -115,7 +114,12 @@ public class ShopEditorListener implements Listener {
             event.setCancelled(true);
             int page = editingPages.getOrDefault(player.getUniqueId(), 0);
             savePage(player, event.getInventory());
-            openEditor(player, plugin.getShopManager().getEditingPlayers().get(player.getUniqueId()), page + 1);
+            PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
+            if (shop.getOffers().size() >= (page + 1) * 10) {
+                openEditor(player, shop, page + 1);
+            } else {
+                openEditor(player, shop, page);
+            }
         } else if (slot == 53) { // Guardar
             event.setCancelled(true);
             savePage(player, event.getInventory());
@@ -126,7 +130,7 @@ public class ShopEditorListener implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        Component title = plugin.getConfigManager().getMenuComponent("editor-title");
+        Component title = plugin.getConfigManager().getMenuComponent("editor.title");
         if (event.getView().title().equals(title)) {
             Player player = (Player) event.getPlayer();
             if (plugin.getShopManager().getEditingPlayers().containsKey(player.getUniqueId())) {
@@ -174,7 +178,8 @@ public class ShopEditorListener implements Listener {
         }
         
         // 2. Insert new
-        offers.addAll(startIndex, pageOffers);
+        int insertIndex = Math.min(startIndex, offers.size());
+        offers.addAll(insertIndex, pageOffers);
         
         shop.setOffers(offers);
         plugin.getShopManager().saveShops();

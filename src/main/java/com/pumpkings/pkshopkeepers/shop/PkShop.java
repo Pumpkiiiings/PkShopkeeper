@@ -20,7 +20,9 @@ public class PkShop {
     private org.bukkit.entity.EntityType entityType = org.bukkit.entity.EntityType.VILLAGER;
     private boolean baby = false;
     private org.bukkit.entity.Villager.Profession villagerProfession = org.bukkit.entity.Villager.Profession.NONE;
-    private String fancyNpcId = null;
+    private org.bukkit.entity.Villager.Type villagerType = org.bukkit.entity.Villager.Type.PLAINS;
+    private int villagerLevel = 1;
+    private String npcId = null;
     private List<PkTradeOffer> offers = new ArrayList<>();
 
     public PkShop(String id) {
@@ -49,8 +51,20 @@ public class PkShop {
             this.villagerProfession = org.bukkit.entity.Villager.Profession.NONE;
         }
 
-        if (section.contains("fancy-npc-id")) {
-            this.fancyNpcId = section.getString("fancy-npc-id");
+        try {
+            org.bukkit.NamespacedKey key = org.bukkit.NamespacedKey.minecraft(section.getString("villagerType", "plains").toLowerCase());
+            org.bukkit.entity.Villager.Type loadedType = org.bukkit.Registry.VILLAGER_TYPE.get(key);
+            this.villagerType = loadedType != null ? loadedType : org.bukkit.entity.Villager.Type.PLAINS;
+        } catch (Exception e) {
+            this.villagerType = org.bukkit.entity.Villager.Type.PLAINS;
+        }
+
+        this.villagerLevel = section.getInt("villagerLevel", 1);
+
+        if (section.contains("npc-id")) {
+            this.npcId = section.getString("npc-id");
+        } else if (section.contains("fancy-npc-id")) {
+            this.npcId = section.getString("fancy-npc-id");
         }
         
         String worldName = section.getString("location.world");
@@ -88,11 +102,13 @@ public class PkShop {
         section.set("entityType", entityType.name());
         section.set("baby", baby);
         section.set("villagerProfession", villagerProfession.name());
+        section.set("villagerType", villagerType.name());
+        section.set("villagerLevel", villagerLevel);
         
-        if (fancyNpcId != null) {
-            section.set("fancy-npc-id", fancyNpcId);
+        if (npcId != null) {
+            section.set("npc-id", npcId);
         } else {
-            section.set("fancy-npc-id", null);
+            section.set("npc-id", null);
         }
         
         if (location != null) {
@@ -125,8 +141,8 @@ public class PkShop {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public String getFancyNpcId() { return fancyNpcId; }
-    public void setFancyNpcId(String fancyNpcId) { this.fancyNpcId = fancyNpcId; }
+    public String getNpcId() { return npcId; }
+    public void setNpcId(String npcId) { this.npcId = npcId; }
     public Location getLocation() { return location; }
     public void setLocation(Location location) { this.location = location; }
     public UUID getEntityUUID() { return entityUUID; }
@@ -137,6 +153,10 @@ public class PkShop {
     public void setBaby(boolean baby) { this.baby = baby; }
     public org.bukkit.entity.Villager.Profession getVillagerProfession() { return villagerProfession; }
     public void setVillagerProfession(org.bukkit.entity.Villager.Profession villagerProfession) { this.villagerProfession = villagerProfession; }
+    public org.bukkit.entity.Villager.Type getVillagerType() { return villagerType; }
+    public void setVillagerType(org.bukkit.entity.Villager.Type villagerType) { this.villagerType = villagerType; }
+    public int getVillagerLevel() { return villagerLevel; }
+    public void setVillagerLevel(int villagerLevel) { this.villagerLevel = villagerLevel; }
     public List<PkTradeOffer> getOffers() { return offers; }
     public void setOffers(List<PkTradeOffer> offers) { this.offers = offers; }
 }

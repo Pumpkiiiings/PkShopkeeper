@@ -1,24 +1,25 @@
 package com.pumpkings.pkshopkeepers.compat;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.entity.Player;
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
-import de.oliver.fancynpcs.api.events.NpcInteractEvent;
+import org.axostudio.axonpcs.api.event.AxoNPCInteractEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.EventPriority;
 
-public class FancyNpcsInteractListener implements Listener {
+public class AxoNpcsInteractListener implements Listener {
 
     private final PkShopkeepers plugin;
 
-    public FancyNpcsInteractListener(PkShopkeepers plugin) {
+    public AxoNpcsInteractListener(PkShopkeepers plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
-    public void onNpcInteract(NpcInteractEvent event) {
-        String npcId = event.getNpc().getData().getName(); // or getId()
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onNpcInteract(AxoNPCInteractEvent event) {
+        String npcId = event.getNPC().getId();
         Player player = event.getPlayer();
 
         for (PkShop shop : plugin.getShopManager().getShops()) {
@@ -30,7 +31,7 @@ public class FancyNpcsInteractListener implements Listener {
                 } else {
                     plugin.getShopEntityListener().openShop(player, shop);
                 }
-                return;
+                break;
             }
         }
     }

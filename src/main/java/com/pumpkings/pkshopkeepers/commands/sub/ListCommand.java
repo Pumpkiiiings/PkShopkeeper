@@ -19,9 +19,9 @@ public class ListCommand implements Command<CommandSourceStack> {
     @Override
     public int run(CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getSender();
-        sender.sendMessage(plugin.getConfigManager().parseString("&e--- Lista de Tiendas ---"));
+        sender.sendMessage(plugin.getConfigManager().getMessage("list-header"));
         for (PkShop shop : plugin.getShopManager().getShops()) {
-            sender.sendMessage(plugin.getConfigManager().parseString("&7- &a" + shop.getId() + " &8(&7" + shop.getName() + "&8)"));
+            sender.sendMessage(plugin.getConfigManager().getMessage("list-format", "%id%", shop.getId(), "%name%", shop.getName()));
         }
         return Command.SINGLE_SUCCESS;
     }

@@ -45,13 +45,9 @@ public class FixAllCommand implements Command<CommandSourceStack> {
             }
             if (totalFixed > 0) {
                 plugin.getShopManager().saveShops();
-                player.sendMessage("§8§m----------------------------------------");
-                player.sendMessage("§a§lResultado Final:");
-                player.sendMessage("§7Tradeos arreglados: §e" + totalFixed);
-                player.sendMessage("§7Tiendas afectadas: §e" + shopsFixed);
-                player.sendMessage("§8§m----------------------------------------");
+                player.sendMessage(plugin.getConfigManager().getMessage("fixall-success-all", "%trades%", String.valueOf(totalFixed), "%shops%", String.valueOf(shopsFixed)));
             } else {
-                player.sendMessage("§c[PkShopkeepers] No se encontraron coincidencias para actualizar en ninguna tienda.");
+                player.sendMessage(plugin.getConfigManager().getMessage("fixall-none-all"));
             }
             return Command.SINGLE_SUCCESS;
         }
@@ -67,13 +63,9 @@ public class FixAllCommand implements Command<CommandSourceStack> {
 
         if (fixedCount > 0) {
             plugin.getShopManager().saveShops();
-            player.sendMessage("§8§m----------------------------------------");
-            player.sendMessage("§a§lResultado Final:");
-            player.sendMessage("§7Tradeos arreglados: §e" + fixedCount);
-            player.sendMessage("§7Tienda afectada: §e" + shop.getName());
-            player.sendMessage("§8§m----------------------------------------");
+            player.sendMessage(plugin.getConfigManager().getMessage("fixall-success-one", "%trades%", String.valueOf(fixedCount), "%shop%", shop.getName()));
         } else {
-            player.sendMessage("§c[PkShopkeepers] No se encontraron ítems en tu inventario con el mismo Material y Nombre Exacto que los de la tienda para actualizar.");
+            player.sendMessage(plugin.getConfigManager().getMessage("fixall-none-one"));
         }
 
         return Command.SINGLE_SUCCESS;

@@ -20,6 +20,8 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
     private com.pumpkings.pkshopkeepers.editor.MainMenuGUI mainMenuGUI;
     private com.pumpkings.pkshopkeepers.editor.EntitySelectorGUI entitySelectorGUI;
     private com.pumpkings.pkshopkeepers.editor.ProfessionSelectorGUI professionSelectorGUI;
+    private com.pumpkings.pkshopkeepers.editor.VillagerTypeGUI villagerTypeGUI;
+    private com.pumpkings.pkshopkeepers.editor.VillagerLevelGUI villagerLevelGUI;
 
     @Override
     public void onEnable() {
@@ -36,19 +38,29 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
             new com.pumpkings.pkshopkeepers.compat.FancyNpcsInteractListener(this);
             fancyNpcs = true;
         }
+
+        boolean axoNpcs = false;
+        if (getServer().getPluginManager().getPlugin("AxoNPCs") != null) {
+            new com.pumpkings.pkshopkeepers.compat.AxoNpcsInteractListener(this);
+            axoNpcs = true;
+        }
         
         this.shopEditorListener = new com.pumpkings.pkshopkeepers.editor.ShopEditorListener(this);
         this.mainMenuGUI = new com.pumpkings.pkshopkeepers.editor.MainMenuGUI(this);
         this.entitySelectorGUI = new com.pumpkings.pkshopkeepers.editor.EntitySelectorGUI(this);
         this.professionSelectorGUI = new com.pumpkings.pkshopkeepers.editor.ProfessionSelectorGUI(this);
+        this.villagerTypeGUI = new com.pumpkings.pkshopkeepers.editor.VillagerTypeGUI(this);
+        this.villagerLevelGUI = new com.pumpkings.pkshopkeepers.editor.VillagerLevelGUI(this);
         getServer().getPluginManager().registerEvents(this, this);
+        
+        new com.pumpkings.pkshopkeepers.api.PkShopkeepersAPI(this);
 
-        printAsciiBanner(fancyNpcs);
+        printAsciiBanner(fancyNpcs, axoNpcs);
         
         new com.pumpkings.pkshopkeepers.commands.CommandManager(this);
     }
 
-    private void printAsciiBanner(boolean fancyNpcs) {
+    private void printAsciiBanner(boolean fancyNpcs, boolean axoNpcs) {
         String[] ascii = {
             "                                                                                       ",
             "▄▄▄▄▄▄▄           ▄▄▄▄▄▄▄ ▄▄                                                           ",
@@ -68,11 +80,13 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
         String mcVersion = getServer().getMinecraftVersion();
         int shopsLoaded = shopManager.getShops().size();
         String fancyText = fancyNpcs ? "§aDetected" : "§cNo Detected";
+        String axoText = axoNpcs ? "§aDetected" : "§cNo Detected";
         
         getServer().getConsoleSender().sendMessage("§fVersion: §a" + version);
         getServer().getConsoleSender().sendMessage("§fMinecraft Version: §b" + mcVersion);
         getServer().getConsoleSender().sendMessage("§fShopkeepers loaded: §d" + shopsLoaded);
         getServer().getConsoleSender().sendMessage("§fFancyNpc: " + fancyText);
+        getServer().getConsoleSender().sendMessage("§fAxoNPCs: " + axoText);
         getServer().getConsoleSender().sendMessage("§7¡Thanks for use my plugin!");
     }
 
@@ -130,6 +144,14 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
 
     public com.pumpkings.pkshopkeepers.editor.ProfessionSelectorGUI getProfessionSelectorGUI() {
         return professionSelectorGUI;
+    }
+
+    public com.pumpkings.pkshopkeepers.editor.VillagerTypeGUI getVillagerTypeGUI() {
+        return villagerTypeGUI;
+    }
+
+    public com.pumpkings.pkshopkeepers.editor.VillagerLevelGUI getVillagerLevelGUI() {
+        return villagerLevelGUI;
     }
 
     public com.pumpkings.pkshopkeepers.utils.ConfigManager getConfigManager() {

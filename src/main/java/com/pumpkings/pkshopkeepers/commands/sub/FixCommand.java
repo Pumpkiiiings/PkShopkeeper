@@ -77,7 +77,7 @@ public class FixCommand implements Command<CommandSourceStack> {
             }
             offer.setItem1(mainHand.clone());
             plugin.getShopManager().saveShops();
-            player.sendMessage("§a[PkShopkeepers] §fEl ítem 1 del trade §e" + (tradeIndex + 1) + " §fha sido sobreescrito con el de tu mano.");
+            player.sendMessage(plugin.getConfigManager().getMessage("fix-item1", "%trade%", String.valueOf(tradeIndex + 1)));
         } else if (action.equalsIgnoreCase("item2")) {
             ItemStack mainHand = player.getInventory().getItemInMainHand();
             if (mainHand.getType() == Material.AIR) {
@@ -86,7 +86,7 @@ public class FixCommand implements Command<CommandSourceStack> {
             }
             offer.setItem2(mainHand.clone());
             plugin.getShopManager().saveShops();
-            player.sendMessage("§a[PkShopkeepers] §fEl ítem 2 del trade §e" + (tradeIndex + 1) + " §fha sido sobreescrito con el de tu mano.");
+            player.sendMessage(plugin.getConfigManager().getMessage("fix-item2", "%trade%", String.valueOf(tradeIndex + 1)));
         } else if (action.equalsIgnoreCase("result")) {
             ItemStack mainHand = player.getInventory().getItemInMainHand();
             if (mainHand.getType() == Material.AIR) {
@@ -95,9 +95,9 @@ public class FixCommand implements Command<CommandSourceStack> {
             }
             offer.setResult(mainHand.clone());
             plugin.getShopManager().saveShops();
-            player.sendMessage("§a[PkShopkeepers] §fEl resultado del trade §e" + (tradeIndex + 1) + " §fha sido sobreescrito con el de tu mano.");
+            player.sendMessage(plugin.getConfigManager().getMessage("fix-result", "%trade%", String.valueOf(tradeIndex + 1)));
         } else {
-            player.sendMessage("§c[PkShopkeepers] | Acción inválida. Usa 'to_shop', 'to_inv', 'item1', 'item2' o 'result'.");
+            player.sendMessage(plugin.getConfigManager().getMessage("fix-invalid-action"));
         }
 
         return Command.SINGLE_SUCCESS;

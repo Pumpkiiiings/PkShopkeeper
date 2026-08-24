@@ -1,9 +1,9 @@
 name: PkShopkeepers
-version: 1.0-SNAPSHOT
+version: 1.5
 main: com.pumpkings.pkshopkeepers.PkShopkeepers
 api-version: '1.21'
 description: A modern re-implementation of Shopkeepers
-author: Antigravity
+author: Pumpkings
 
 folia-supported: true
 

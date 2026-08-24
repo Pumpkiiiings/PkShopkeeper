@@ -27,7 +27,7 @@ public class ProfessionSelectorGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
-        Component title = Component.text("Seleccionar Profesión"); // Add to config later
+        Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
         Inventory inv = Bukkit.createInventory(null, 27, title);
 
         int slot = 0;
@@ -40,7 +40,7 @@ public class ProfessionSelectorGUI implements Listener {
             inv.setItem(i, createItem(Material.BLACK_STAINED_GLASS_PANE, Component.text(" ")));
         }
 
-        inv.setItem(22, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("btn-back")));
+        inv.setItem(22, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("profession-selector.btn-back")));
 
         plugin.getShopManager().getEditingPlayers().put(player.getUniqueId(), shop);
         player.openInventory(inv);
@@ -89,7 +89,7 @@ public class ProfessionSelectorGUI implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        Component title = Component.text("Seleccionar Profesión");
+        Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
         if (event.getView().title().equals(title) || event.getView().getTitle().equals("Seleccionar Profesión")) {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
@@ -134,7 +134,7 @@ public class ProfessionSelectorGUI implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        Component title = Component.text("Seleccionar Profesión");
+        Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
         if (event.getView().title().equals(title) || event.getView().getTitle().equals("Seleccionar Profesión")) {
             Player player = (Player) event.getPlayer();
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {

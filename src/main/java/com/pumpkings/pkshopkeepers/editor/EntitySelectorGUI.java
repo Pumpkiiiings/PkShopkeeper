@@ -22,7 +22,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 public class EntitySelectorGUI implements Listener {
 
     private final PkShopkeepers plugin;
-    private final Component title = Component.text("Seleccionar Entidad");
 
     private java.util.Map<java.util.UUID, Integer> selectorPages = new java.util.HashMap<>();
 
@@ -36,7 +35,7 @@ public class EntitySelectorGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop, int page) {
-        Component title = plugin.getConfigManager().getMenuComponent("selector-title");
+        Component title = plugin.getConfigManager().getMenuComponent("entity-selector.title");
         Inventory inv = Bukkit.createInventory(null, 54, title);
 
         List<String> enabledTypes = plugin.getConfigManager().getStringList("settings.enabled-living-shops");
@@ -63,15 +62,15 @@ public class EntitySelectorGUI implements Listener {
             inv.setItem(i, createItem(Material.BLACK_STAINED_GLASS_PANE, Component.text(" ")));
         }
 
-        inv.setItem(48, createItem(Material.TOTEM_OF_UNDYING, plugin.getConfigManager().getMenuComponent("btn-baby-toggle")));
+        inv.setItem(45, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("entity-selector.btn-prev-page")));
+        inv.setItem(46, createItem(Material.BARRIER, plugin.getConfigManager().getMenuComponent("entity-selector.btn-back")));
+        inv.setItem(48, createItem(Material.TOTEM_OF_UNDYING, plugin.getConfigManager().getMenuComponent("entity-selector.btn-baby-toggle")));
         
         if (shop.getEntityType() == EntityType.VILLAGER) {
-            inv.setItem(50, createItem(Material.LECTERN, plugin.getConfigManager().getMenuComponent("btn-change-prof")));
+            inv.setItem(50, createItem(Material.LECTERN, plugin.getConfigManager().getMenuComponent("entity-selector.btn-change-prof")));
         }
         
-        inv.setItem(45, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("btn-prev-page")));
-        inv.setItem(46, createItem(Material.BARRIER, plugin.getConfigManager().getMenuComponent("btn-back")));
-        inv.setItem(53, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("btn-next-page")));
+        inv.setItem(53, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("entity-selector.btn-next-page")));
 
         plugin.getShopManager().getEditingPlayers().put(player.getUniqueId(), shop);
         selectorPages.put(player.getUniqueId(), page);
@@ -110,7 +109,7 @@ public class EntitySelectorGUI implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        Component title = plugin.getConfigManager().getMenuComponent("selector-title");
+        Component title = plugin.getConfigManager().getMenuComponent("entity-selector.title");
         if (event.getView().title().equals(title)) {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
@@ -161,7 +160,7 @@ public class EntitySelectorGUI implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        Component title = plugin.getConfigManager().getMenuComponent("selector-title");
+        Component title = plugin.getConfigManager().getMenuComponent("entity-selector.title");
         if (event.getView().title().equals(title)) {
             Player player = (Player) event.getPlayer();
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {

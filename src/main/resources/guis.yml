@@ -1,0 +1,66 @@
+# Configuración de los menús (GUIs) del plugin
+# Puedes usar & para colores legacy o tags de MiniMessage como <red>.
+
+main-menu:
+  title: "&8Panel de control - %id%"
+  btn-edit-trades: "&e&lEditar Trades"
+  btn-edit-trades-lore:
+    - "&7Abre el menú para añadir"
+    - "&7o quitar monedas e items."
+  btn-change-name: "&a&lCambiar Nombre"
+  btn-change-name-lore:
+    - "&7Renombra a %name%"
+  btn-change-type: "&b&lCambiar Entidad"
+  btn-change-type-lore:
+    - "&7Actualmente: &a%type%"
+    - "&7Bebé: &a%baby%"
+  btn-villager-type: "&d&lCambiar Bioma"
+  btn-villager-type-lore:
+    - "&7Actualmente: &a%type%"
+  btn-villager-level: "&a&lCambiar Nivel"
+  btn-villager-level-lore:
+    - "&7Nivel de placa: &a%level%"
+  btn-delete-shop: "&c&lEliminar Tienda"
+  btn-delete-shop-lore:
+    - "&7Borrará la tienda permanentemente."
+    - "&7(No reversible)"
+
+editor:
+  title: "&8Editor de PkShop"
+  btn-save: "&a&lGuardar"
+  btn-prev-page: "&e&lPágina Anterior"
+  btn-next-page: "&e&lPágina Siguiente"
+
+entity-selector:
+  title: "&8Seleccionar Entidad"
+  btn-baby-toggle: "&eAlternar Bebé"
+  btn-change-prof: "&bCambiar Profesión"
+  btn-back: "&cVolver"
+  btn-prev-page: "&ePágina Anterior"
+  btn-next-page: "&ePágina Siguiente"
+
+profession-selector:
+  title: "&8Seleccionar Profesión"
+  btn-back: "&cVolver"
+
+villager-type-menu:
+  title: '&8Seleccionar Bioma'
+  types:
+    desert:
+      name: '&eDesierto'
+    jungle:
+      name: '&2Jungla'
+    plains:
+      name: '&aLlanura'
+    savanna:
+      name: '&6Sabana'
+    snow:
+      name: '&fNieve'
+    swamp:
+      name: '&3Pantano'
+    taiga:
+      name: '&3Taiga'
+
+villager-level-menu:
+  title: '&8Seleccionar Nivel'
+  btn-level: '&aNivel %level%'

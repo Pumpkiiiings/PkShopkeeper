@@ -44,10 +44,10 @@ public class LinkCommand implements Command<CommandSourceStack> {
             shop.setEntityUUID(null);
         }
 
-        shop.setFancyNpcId(npcId);
+        shop.setNpcId(npcId);
         plugin.getShopManager().saveShops();
 
-        sender.sendMessage(plugin.getConfigManager().parseString("&aTienda " + shopId + " vinculada exitosamente al FancyNPC " + npcId + "."));
+        sender.sendMessage(plugin.getConfigManager().getMessage("link-success", "%id%", shopId, "%npc%", npcId));
         
         return Command.SINGLE_SUCCESS;
     }

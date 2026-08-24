@@ -20,7 +20,7 @@ public class LegacyMigrator {
 
     public static void runMigration(PkShopkeepers plugin, CommandSender sender) {
         if (org.bukkit.Bukkit.getPluginManager().getPlugin("Shopkeepers") == null) {
-            sender.sendMessage("§cEl plugin Shopkeepers original no está instalado o activo. No se puede migrar.");
+            sender.sendMessage(plugin.getConfigManager().getMessage("migrate-no-plugin"));
             return;
         }
 
@@ -31,12 +31,40 @@ public class LegacyMigrator {
                 if (sk instanceof RegularAdminShopkeeper) {
                     RegularAdminShopkeeper adminSk = (RegularAdminShopkeeper) sk;
                     
-                    String newId = plugin.getShopManager().getNextId();
+                    String newId = String.valueOf(adminSk.getId());
                     PkShop newShop = new PkShop(newId);
                     newShop.setName(adminSk.getName() != null ? adminSk.getName() : "Shopkeeper");
                     newShop.setLocation(adminSk.getLocation());
-                    // newShop.setEntityUUID(...); // Generará un UUID aleatorio para la nueva entidad
                     
+                    com.nisovin.shopkeepers.api.shopobjects.ShopObject obj = adminSk.getShopObject();
+                    if (obj != null) {
+                        try {
+                            java.lang.reflect.Method getBaby = obj.getClass().getMethod("isBaby");
+                            newShop.setBaby((boolean) getBaby.invoke(obj));
+                        } catch (Exception e) {}
+                        
+                        try {
+                            java.lang.reflect.Method getProfession = obj.getClass().getMethod("getProfession");
+                            Object prof = getProfession.invoke(obj);
+                            if (prof != null) {
+                                newShop.setVillagerProfession(org.bukkit.entity.Villager.Profession.valueOf(prof.toString().toUpperCase()));
+                            }
+                        } catch (Exception e) {}
+                        
+                        try {
+                            java.lang.reflect.Method getType = obj.getClass().getMethod("getVillagerType");
+                            Object vType = getType.invoke(obj);
+                            if (vType != null) {
+                                newShop.setVillagerType(org.bukkit.entity.Villager.Type.valueOf(vType.toString().toUpperCase()));
+                            }
+                        } catch (Exception e) {}
+                        
+                        try {
+                            java.lang.reflect.Method getLevel = obj.getClass().getMethod("getVillagerLevel");
+                            newShop.setVillagerLevel((int) getLevel.invoke(obj));
+                        } catch (Exception e) {}
+                    }
+
                     List<PkTradeOffer> pkOffers = new ArrayList<>();
                     for (TradeOffer offer : adminSk.getOffers()) {
                         org.bukkit.inventory.ItemStack item1 = ItemUtils.asItemStack(offer.getItem1());
@@ -52,17 +80,17 @@ public class LegacyMigrator {
             }
             
             manager.saveShops();
-            sender.sendMessage("§a¡Migración exitosa! Se han migrado " + count + " shopkeepers (Admin Shops) al nuevo formato.");
-            sender.sendMessage("§ePuedes detener el servidor, borrar la carpeta del viejo Shopkeepers, y todo funcionará nativamente con PkShopkeepers.");
+            sender.sendMessage(plugin.getConfigManager().getMessage("migrate-success", "%count%", String.valueOf(count)));
+            sender.sendMessage(plugin.getConfigManager().getMessage("migrate-instruction"));
         } catch (Exception e) {
-            sender.sendMessage("§cOcurrió un error al migrar: " + e.getMessage());
+            sender.sendMessage(plugin.getConfigManager().getMessage("parse-error", "%error%", e.getMessage()));
             e.printStackTrace();
         }
     }
 
     public static void scanMigration(PkShopkeepers plugin, CommandSender sender) {
         if (org.bukkit.Bukkit.getPluginManager().getPlugin("Shopkeepers") == null) {
-            sender.sendMessage("§cEl plugin Shopkeepers original no está instalado o activo. No se puede escanear.");
+            sender.sendMessage(plugin.getConfigManager().getMessage("scan-no-plugin"));
             return;
         }
         
@@ -76,14 +104,14 @@ public class LegacyMigrator {
                     skipped++;
                 }
             }
-            sender.sendMessage("§b--- Escaneo de Migración ---");
-            sender.sendMessage("§fAdmin Shops encontrados: §a" + count + " §7(Listos para migrar)");
-            sender.sendMessage("§fOtras Tiendas (Jugadores/Límites/etc): §c" + skipped + " §7(Serán ignoradas)");
+            sender.sendMessage(plugin.getConfigManager().getMessage("migrate-scan-title"));
+            sender.sendMessage(plugin.getConfigManager().getMessage("migrate-scan-ready", "%count%", String.valueOf(count)));
+            sender.sendMessage(plugin.getConfigManager().getMessage("migrate-scan-skipped", "%skipped%", String.valueOf(skipped)));
             if (count > 0) {
-                sender.sendMessage("§eSi estás listo, ejecuta: §b/pks migrate start");
+                sender.sendMessage(plugin.getConfigManager().getMessage("migrate-scan-cmd"));
             }
         } catch (Exception e) {
-            sender.sendMessage("§cOcurrió un error al escanear: " + e.getMessage());
+            sender.sendMessage(plugin.getConfigManager().getMessage("parse-error", "%error%", e.getMessage()));
             e.printStackTrace();
         }
     }

@@ -34,14 +34,14 @@ public class UnlinkCommand implements Command<CommandSourceStack> {
             return 0;
         }
 
-        shop.setFancyNpcId(null);
+        shop.setNpcId(null);
         plugin.getShopManager().saveShops();
         
         com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runRegionTask(plugin, shop.getLocation(), () -> {
             new com.pumpkings.pkshopkeepers.entity.ShopEntityListener(plugin, plugin.getShopManager()).spawnShop(shop);
         });
 
-        sender.sendMessage(plugin.getConfigManager().parseString("&aTienda " + shopId + " desvinculada y restaurada a entidad Vanilla."));
+        sender.sendMessage(plugin.getConfigManager().getMessage("unlink-success", "%id%", shopId));
         
         return Command.SINGLE_SUCCESS;
     }

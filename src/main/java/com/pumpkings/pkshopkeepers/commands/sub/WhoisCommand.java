@@ -42,16 +42,15 @@ public class WhoisCommand implements Command<CommandSourceStack> {
         }
 
         if (closestShop != null) {
-            player.sendMessage("§a[PkShopkeepers] §fEl Shopkeeper más cercano es:");
-            player.sendMessage("§7Nombre: §f" + closestShop.getName());
-            player.sendMessage("§7ID: §e" + closestShop.getId());
-            
-            net.kyori.adventure.text.Component msg = net.kyori.adventure.text.Component.text("§7Haz click para copiar: §n§b" + closestShop.getId())
+            player.sendMessage(plugin.getConfigManager().getMessage("whois-nearest"));
+            player.sendMessage(plugin.getConfigManager().getMessage("whois-name", "%name%", closestShop.getName()));
+            player.sendMessage(plugin.getConfigManager().getMessage("whois-id", "%id%", closestShop.getId()));
+            net.kyori.adventure.text.Component msg = plugin.getConfigManager().getMessageRaw("whois-copy", "%id%", closestShop.getId())
                 .clickEvent(net.kyori.adventure.text.event.ClickEvent.copyToClipboard(closestShop.getId()))
-                .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(net.kyori.adventure.text.Component.text("§aCopiar ID al portapapeles")));
+                .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(plugin.getConfigManager().getMessageRaw("whois-hover")));
             player.sendMessage(msg);
         } else {
-            player.sendMessage("§cNo se encontraron tiendas en un radio de 5 bloques.");
+            player.sendMessage(plugin.getConfigManager().getMessage("whois-not-found"));
         }
 
         return Command.SINGLE_SUCCESS;

@@ -141,7 +141,10 @@ public class EntitySelectorGUI implements Listener {
             } else if (slot == 48) {
                 shop.setBaby(!shop.isBaby());
                 respawnShop(shop);
-                player.sendMessage(plugin.getConfigManager().getMessage("baby-state", "%state%", shop.isBaby() ? "Sí" : "No"));
+                String stateLabel = shop.isBaby()
+                    ? plugin.getConfigManager().getRawString("messages.baby-state-on", "Sí")
+                    : plugin.getConfigManager().getRawString("messages.baby-state-off", "No");
+                player.sendMessage(plugin.getConfigManager().getMessage("baby-state", "%state%", stateLabel));
             } else if (slot == 50 && shop.getEntityType() == EntityType.VILLAGER) {
                 plugin.getProfessionSelectorGUI().openMenu(player, shop);
             } else if (slot == 46) {

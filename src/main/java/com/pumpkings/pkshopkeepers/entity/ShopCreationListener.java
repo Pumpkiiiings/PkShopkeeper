@@ -39,7 +39,7 @@ public class ShopCreationListener implements Listener {
             
             String newId = plugin.getShopManager().getNextId();
             PkShop newShop = new PkShop(newId);
-            newShop.setName("Nueva Tienda");
+            newShop.setName("New Shop");
             newShop.setLocation(event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5));
             newShop.setEntityType(EntityType.VILLAGER);
             

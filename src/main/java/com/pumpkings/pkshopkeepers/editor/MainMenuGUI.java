@@ -24,7 +24,7 @@ public class MainMenuGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
-        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Panel de control - %id%");
+        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Shop Control Panel - %id%");
         titleStr = titleStr.replace("%id%", shop.getId());
         
         Component title = plugin.getConfigManager().parseString(titleStr);
@@ -65,7 +65,7 @@ public class MainMenuGUI implements Listener {
         PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
         if (shop == null) return;
         
-        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Panel de control - %id%");
+        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Shop Control Panel - %id%");
         titleStr = titleStr.replace("%id%", shop.getId());
         
         Component title = plugin.getConfigManager().parseString(titleStr);
@@ -101,9 +101,9 @@ public class MainMenuGUI implements Listener {
         PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
         if (shop == null) return;
         
-        String titleStr = plugin.getConfig().getString("menus.main-menu-title", "Panel de control - %id%");
+        String titleStr = plugin.getConfigManager().getGuiString("main-menu.title", "Shop Control Panel - %id%");
         titleStr = titleStr.replace("%id%", shop.getId());
-        Component expectedTitle = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(titleStr);
+        Component expectedTitle = plugin.getConfigManager().parseString(titleStr);
         
         if (event.getView().title().equals(expectedTitle)) {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {

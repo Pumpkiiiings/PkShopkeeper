@@ -25,7 +25,7 @@ public class VillagerTypeGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
-        String titleStr = plugin.getConfigManager().getGuiString("villager-type-menu.title", "Seleccionar Bioma");
+        String titleStr = plugin.getConfigManager().getGuiString("villager-type-menu.title", "Select Biome");
         Component title = plugin.getConfigManager().parseString(titleStr);
         Inventory inv = Bukkit.createInventory(null, 27, title);
         
@@ -70,7 +70,7 @@ public class VillagerTypeGUI implements Listener {
         PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
         if (shop == null) return;
         
-        String titleStr = plugin.getConfigManager().getGuiString("villager-type-menu.title", "Seleccionar Bioma");
+        String titleStr = plugin.getConfigManager().getGuiString("villager-type-menu.title", "Select Biome");
         Component title = plugin.getConfigManager().parseString(titleStr);
         if (!event.getView().title().equals(title)) return;
         event.setCancelled(true);

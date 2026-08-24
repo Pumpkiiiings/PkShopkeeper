@@ -33,7 +33,7 @@ public class CreateCommand implements Command<CommandSourceStack> {
         }
 
         PkShop newShop = new PkShop(UUID.randomUUID().toString());
-        newShop.setName("Nueva Tienda");
+        newShop.setName("New Shop");
         newShop.setLocation(player.getLocation());
 
         try {

@@ -24,7 +24,7 @@ public class VillagerLevelGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
-        String titleStr = plugin.getConfigManager().getGuiString("villager-level-menu.title", "Seleccionar Nivel");
+        String titleStr = plugin.getConfigManager().getGuiString("villager-level-menu.title", "Select Level");
         Component title = plugin.getConfigManager().parseString(titleStr);
         Inventory inv = Bukkit.createInventory(null, 27, title);
         
@@ -54,7 +54,7 @@ public class VillagerLevelGUI implements Listener {
         PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
         if (shop == null) return;
         
-        String titleStr = plugin.getConfigManager().getGuiString("villager-level-menu.title", "Seleccionar Nivel");
+        String titleStr = plugin.getConfigManager().getGuiString("villager-level-menu.title", "Select Level");
         Component title = plugin.getConfigManager().parseString(titleStr);
         if (!event.getView().title().equals(title)) return;
         event.setCancelled(true);

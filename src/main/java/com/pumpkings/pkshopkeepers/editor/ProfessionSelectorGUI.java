@@ -90,7 +90,7 @@ public class ProfessionSelectorGUI implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
-        if (event.getView().title().equals(title) || event.getView().getTitle().equals("Seleccionar Profesión")) {
+        if (event.getView().title().equals(title)) {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
@@ -113,7 +113,7 @@ public class ProfessionSelectorGUI implements Listener {
                         if (prof != null) {
                             shop.setVillagerProfession(prof);
                             respawnShop(shop);
-                            player.sendMessage("§aProfesión cambiada a " + profName);
+                            player.sendMessage(plugin.getConfigManager().getMessage("profession-changed", "%profession%", profName));
                             openMenu(player, shop);
                         }
                     } catch (Exception ignored) { }
@@ -135,7 +135,7 @@ public class ProfessionSelectorGUI implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
-        if (event.getView().title().equals(title) || event.getView().getTitle().equals("Seleccionar Profesión")) {
+        if (event.getView().title().equals(title)) {
             Player player = (Player) event.getPlayer();
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 if (player.getOpenInventory().getTopInventory().getSize() <= 5) {

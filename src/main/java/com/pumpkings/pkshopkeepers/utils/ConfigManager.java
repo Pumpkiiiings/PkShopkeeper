@@ -98,6 +98,10 @@ public class ConfigManager {
         return config.getBoolean(path, def);
     }
     
+    public String getRawString(String path, String def) {
+        return config.getString(path, def);
+    }
+    
     public List<String> getStringList(String path) {
         return config.getStringList(path);
     }

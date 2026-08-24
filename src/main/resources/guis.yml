@@ -1,66 +1,120 @@
-# Configuración de los menús (GUIs) del plugin
-# Puedes usar & para colores legacy o tags de MiniMessage como <red>.
+# GUI menu configuration
+# You can use & for legacy colors or MiniMessage tags like <red>.
 
 main-menu:
-  title: "&8Panel de control - %id%"
-  btn-edit-trades: "&e&lEditar Trades"
+  title: "&8Shop Control Panel - %id%"
+  btn-edit-trades: "&e&lEdit Trades"
   btn-edit-trades-lore:
-    - "&7Abre el menú para añadir"
-    - "&7o quitar monedas e items."
-  btn-change-name: "&a&lCambiar Nombre"
+    - "&7Opens the menu to add"
+    - "&7or remove items and prices."
+  btn-change-name: "&a&lChange Name"
   btn-change-name-lore:
-    - "&7Renombra a %name%"
-  btn-change-type: "&b&lCambiar Entidad"
+    - "&7Rename to &f%name%"
+    - "&7(Supports MiniMessage)"
+  btn-change-type: "&b&lChange Entity"
   btn-change-type-lore:
-    - "&7Actualmente: &a%type%"
-    - "&7Bebé: &a%baby%"
-  btn-villager-type: "&d&lCambiar Bioma"
+    - "&7Current: &a%type%"
+    - "&7Baby: &a%baby%"
+    - ""
+    - "&eClick to change."
+  btn-villager-type: "&d&lChange Biome"
   btn-villager-type-lore:
-    - "&7Actualmente: &a%type%"
-  btn-villager-level: "&a&lCambiar Nivel"
+    - "&7Current: &a%type%"
+    - ""
+    - "&eClick to change."
+  btn-villager-level: "&a&lChange Level"
   btn-villager-level-lore:
-    - "&7Nivel de placa: &a%level%"
-  btn-delete-shop: "&c&lEliminar Tienda"
+    - "&7Badge level: &a%level%"
+    - ""
+    - "&eClick to change."
+  btn-delete-shop: "&c&lDelete Shop"
   btn-delete-shop-lore:
-    - "&7Borrará la tienda permanentemente."
-    - "&7(No reversible)"
+    - "&7Permanently deletes the shop."
+    - "&c(Irreversible)"
+  btn-close: "&7&lClose"
+  btn-close-lore:
+    - "&7Close this menu."
 
 editor:
-  title: "&8Editor de PkShop"
-  btn-save: "&a&lGuardar"
-  btn-prev-page: "&e&lPágina Anterior"
-  btn-next-page: "&e&lPágina Siguiente"
+  title: "&8PkShop Editor"
+  btn-save: "&a&lSave"
+  btn-save-lore:
+    - "&7Save the current trades."
+  btn-prev-page: "&e&lPrevious Page"
+  btn-prev-page-lore:
+    - "&7Go to the previous page."
+  btn-next-page: "&e&lNext Page"
+  btn-next-page-lore:
+    - "&7Go to the next page."
+  trade-slot-label: "&8[Trade #%trade%]"
 
 entity-selector:
-  title: "&8Seleccionar Entidad"
-  btn-baby-toggle: "&eAlternar Bebé"
-  btn-change-prof: "&bCambiar Profesión"
-  btn-back: "&cVolver"
-  btn-prev-page: "&ePágina Anterior"
-  btn-next-page: "&ePágina Siguiente"
+  title: "&8Select Entity"
+  btn-baby-toggle: "&eToggle Baby"
+  btn-baby-toggle-lore:
+    - "&7Toggle baby mode on or off."
+    - "&7Current state: &a%baby%"
+  btn-change-prof: "&bChange Profession"
+  btn-change-prof-lore:
+    - "&7Change the villager's profession."
+    - "&7Current profession: &a%profession%"
+  btn-back: "&cBack"
+  btn-back-lore:
+    - "&7Return to the main menu."
+  btn-prev-page: "&ePrevious Page"
+  btn-prev-page-lore:
+    - "&7Go to the previous page."
+  btn-next-page: "&eNext Page"
+  btn-next-page-lore:
+    - "&7Go to the next page."
 
 profession-selector:
-  title: "&8Seleccionar Profesión"
-  btn-back: "&cVolver"
+  title: "&8Select Profession"
+  btn-back: "&cBack"
+  btn-back-lore:
+    - "&7Return to the entity selector."
 
 villager-type-menu:
-  title: '&8Seleccionar Bioma'
+  title: '&8Select Biome'
+  btn-back: '&cBack'
+  btn-back-lore:
+    - '&7Return to the main menu.'
   types:
     desert:
-      name: '&eDesierto'
+      name: '&eDesert'
+      lore:
+        - '&7Desert villager.'
     jungle:
-      name: '&2Jungla'
+      name: '&2Jungle'
+      lore:
+        - '&7Jungle villager.'
     plains:
-      name: '&aLlanura'
+      name: '&aPlains'
+      lore:
+        - '&7Plains villager.'
     savanna:
-      name: '&6Sabana'
+      name: '&6Savanna'
+      lore:
+        - '&7Savanna villager.'
     snow:
-      name: '&fNieve'
+      name: '&fSnow'
+      lore:
+        - '&7Snow villager.'
     swamp:
-      name: '&3Pantano'
+      name: '&3Swamp'
+      lore:
+        - '&7Swamp villager.'
     taiga:
       name: '&3Taiga'
+      lore:
+        - '&7Taiga villager.'
 
 villager-level-menu:
-  title: '&8Seleccionar Nivel'
-  btn-level: '&aNivel %level%'
+  title: '&8Select Level'
+  btn-level: '&aLevel %level%'
+  btn-level-lore:
+    - '&7Sets the villager badge'
+    - '&7level to &f%level%&7.'
+  btn-back: '&cBack'
+  btn-back-lore:
+    - '&7Return to the main menu.'

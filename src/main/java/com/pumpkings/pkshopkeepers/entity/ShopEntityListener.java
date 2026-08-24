@@ -86,6 +86,7 @@ public class ShopEntityListener implements Listener {
                 }
             }
         }
+        shop.setEntityUUID(null);
     }
 
     public void spawnShop(PkShop shop) {

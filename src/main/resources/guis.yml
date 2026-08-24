@@ -1,120 +1,190 @@
-# GUI menu configuration
-# You can use & for legacy colors or MiniMessage tags like <red>.
+# ---------------------------------------------------- #
+#         PkShopkeepers GUI Configuration              #
+# ---------------------------------------------------- #
 
 main-menu:
-  title: "&8Shop Control Panel - %id%"
-  btn-edit-trades: "&e&lEdit Trades"
+  title: "<black>      <underlined>Shop - %id%</underlined>"
+  btn-edit-trades: "<dark_gray>(<color:#4AFF56>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#4AFF56>Edit Trades</color>"
   btn-edit-trades-lore:
-    - "&7Opens the menu to add"
-    - "&7or remove items and prices."
-  btn-change-name: "&a&lChange Name"
+    - "<dark_gray>⌜ Shop Control Panel ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Add or remove items"
+    - "<white> and prices from this shop."
+    - ""
+    - "<color:#FAE033> ♫ Click to open!"
+  btn-change-name: "<dark_gray>(<color:#FFB266>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#FFB266>Change Name</color>"
   btn-change-name-lore:
-    - "&7Rename to &f%name%"
-    - "&7(Supports MiniMessage)"
-  btn-change-type: "&b&lChange Entity"
+    - "<dark_gray>⌜ Shop Control Panel ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Current: <color:#FFB266>%name%"
+    - "<white> (Supports MiniMessage)"
+    - ""
+    - "<color:#FAE033> ♫ Click to rename!"
+  btn-change-type: "<dark_gray>(<color:#25D2FF>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#25D2FF>Change Entity</color>"
   btn-change-type-lore:
-    - "&7Current: &a%type%"
-    - "&7Baby: &a%baby%"
+    - "<dark_gray>⌜ Shop Control Panel ⌟"
     - ""
-    - "&eClick to change."
-  btn-villager-type: "&d&lChange Biome"
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Current: <color:#25D2FF>%type%"
+    - "<white> Baby: <color:#25D2FF>%baby%"
+    - ""
+    - "<color:#FAE033> ♫ Click to change!"
+  btn-villager-type: "<dark_gray>(<color:#B266FF>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#B266FF>Change Biome</color>"
   btn-villager-type-lore:
-    - "&7Current: &a%type%"
+    - "<dark_gray>⌜ Shop Control Panel ⌟"
     - ""
-    - "&eClick to change."
-  btn-villager-level: "&a&lChange Level"
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Current: <color:#B266FF>%type%"
+    - ""
+    - "<color:#FAE033> ♫ Click to change!"
+  btn-villager-level: "<dark_gray>(<color:#4AFF56>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#4AFF56>Change Level</color>"
   btn-villager-level-lore:
-    - "&7Badge level: &a%level%"
+    - "<dark_gray>⌜ Shop Control Panel ⌟"
     - ""
-    - "&eClick to change."
-  btn-delete-shop: "&c&lDelete Shop"
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Badge level: <color:#4AFF56>%level%"
+    - ""
+    - "<color:#FAE033> ♫ Click to change!"
+  btn-delete-shop: "<dark_gray>(<color:#BA0F0F>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#BA0F0F>Delete Shop</color>"
   btn-delete-shop-lore:
-    - "&7Permanently deletes the shop."
-    - "&c(Irreversible)"
-  btn-close: "&7&lClose"
-  btn-close-lore:
-    - "&7Close this menu."
+    - "<dark_gray>⌜ Shop Control Panel ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Permanently deletes this shop."
+    - "<color:#FF5555> Cannot be undone!"
+    - ""
+    - "<color:#FAE033> ♫ Click to delete!"
+  btn-close: ' <color:#FF4848>(✖) Close </color>'
+  btn-close-lore: []
 
 editor:
-  title: "&8PkShop Editor"
-  btn-save: "&a&lSave"
+  title: "<black>      <underlined>Trade Editor</underlined>"
+  btn-save: "<dark_gray>(<color:#4AFF56>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#4AFF56>Save</color>"
   btn-save-lore:
-    - "&7Save the current trades."
-  btn-prev-page: "&e&lPrevious Page"
-  btn-prev-page-lore:
-    - "&7Go to the previous page."
-  btn-next-page: "&e&lNext Page"
-  btn-next-page-lore:
-    - "&7Go to the next page."
-  trade-slot-label: "&8[Trade #%trade%]"
+    - "<dark_gray>⌜ Trade Editor ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Save the current trade layout."
+    - ""
+    - "<color:#FAE033> ♫ Click to save!"
+  btn-prev-page: ' <color:#FF4848>(←) Previous </color>'
+  btn-prev-page-lore: []
+  btn-next-page: ' <color:#4AFF56>(→) Next </color>'
+  btn-next-page-lore: []
+  trade-slot-label: "<dark_gray>[Trade #%trade%]"
 
 entity-selector:
-  title: "&8Select Entity"
-  btn-baby-toggle: "&eToggle Baby"
+  title: "<black>      <underlined>Select Entity</underlined>"
+  btn-baby-toggle: "<dark_gray>(<color:#FAE033>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#FAE033>Toggle Baby</color>"
   btn-baby-toggle-lore:
-    - "&7Toggle baby mode on or off."
-    - "&7Current state: &a%baby%"
-  btn-change-prof: "&bChange Profession"
+    - "<dark_gray>⌜ Entity Selector ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Toggle baby mode on or off."
+    - "<white> Current: <color:#FAE033>%baby%"
+    - ""
+    - "<color:#FAE033> ♫ Click to toggle!"
+  btn-change-prof: "<dark_gray>(<color:#3399FF>✪</color><dark_gray>) <white>Menu <dark_gray>► <color:#3399FF>Change Profession</color>"
   btn-change-prof-lore:
-    - "&7Change the villager's profession."
-    - "&7Current profession: &a%profession%"
-  btn-back: "&cBack"
-  btn-back-lore:
-    - "&7Return to the main menu."
-  btn-prev-page: "&ePrevious Page"
-  btn-prev-page-lore:
-    - "&7Go to the previous page."
-  btn-next-page: "&eNext Page"
-  btn-next-page-lore:
-    - "&7Go to the next page."
+    - "<dark_gray>⌜ Entity Selector ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Current: <color:#3399FF>%profession%"
+    - ""
+    - "<color:#FAE033> ♫ Click to change!"
+  btn-back: ' <color:#FF4848>(←) Back </color>'
+  btn-back-lore: []
+  btn-prev-page: ' <color:#FF4848>(←) Previous </color>'
+  btn-prev-page-lore: []
+  btn-next-page: ' <color:#4AFF56>(→) Next </color>'
+  btn-next-page-lore: []
 
 profession-selector:
-  title: "&8Select Profession"
-  btn-back: "&cBack"
-  btn-back-lore:
-    - "&7Return to the entity selector."
+  title: "<black>      <underlined>Select Profession</underlined>"
+  btn-back: ' <color:#FF4848>(←) Back </color>'
+  btn-back-lore: []
 
 villager-type-menu:
-  title: '&8Select Biome'
-  btn-back: '&cBack'
-  btn-back-lore:
-    - '&7Return to the main menu.'
+  title: "<black>      <underlined>Select Biome</underlined>"
+  btn-back: ' <color:#FF4848>(←) Back </color>'
+  btn-back-lore: []
   types:
     desert:
-      name: '&eDesert'
+      name: "<dark_gray>(<color:#FAE033>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#FAE033>Desert</color>"
       lore:
-        - '&7Desert villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Desert biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
     jungle:
-      name: '&2Jungle'
+      name: "<dark_gray>(<color:#4AFF56>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#4AFF56>Jungle</color>"
       lore:
-        - '&7Jungle villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Jungle biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
     plains:
-      name: '&aPlains'
+      name: "<dark_gray>(<color:#25D2FF>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#25D2FF>Plains</color>"
       lore:
-        - '&7Plains villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Plains biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
     savanna:
-      name: '&6Savanna'
+      name: "<dark_gray>(<color:#FFB266>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#FFB266>Savanna</color>"
       lore:
-        - '&7Savanna villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Savanna biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
     snow:
-      name: '&fSnow'
+      name: "<dark_gray>(<color:#AAEEFF>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#AAEEFF>Snow</color>"
       lore:
-        - '&7Snow villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Snow biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
     swamp:
-      name: '&3Swamp'
+      name: "<dark_gray>(<color:#56A86B>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#56A86B>Swamp</color>"
       lore:
-        - '&7Swamp villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Swamp biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
     taiga:
-      name: '&3Taiga'
+      name: "<dark_gray>(<color:#4C9DDE>✪</color><dark_gray>) <white>Biome <dark_gray>► <color:#4C9DDE>Taiga</color>"
       lore:
-        - '&7Taiga villager.'
+        - "<dark_gray>⌜ Villager Biome ⌟"
+        - ""
+        - "<color:#4AFF56> ⓘ Information:"
+        - "<white> Taiga biome villager."
+        - ""
+        - "<color:#FAE033> ♫ Click to select!"
 
 villager-level-menu:
-  title: '&8Select Level'
-  btn-level: '&aLevel %level%'
+  title: "<black>      <underlined>Select Level</underlined>"
+  btn-level: "<dark_gray>(<color:#FFD700>✪</color><dark_gray>) <white>Level <dark_gray>► <color:#FFD700>Level %level%</color>"
   btn-level-lore:
-    - '&7Sets the villager badge'
-    - '&7level to &f%level%&7.'
-  btn-back: '&cBack'
-  btn-back-lore:
-    - '&7Return to the main menu.'
+    - "<dark_gray>⌜ Villager Level ⌟"
+    - ""
+    - "<color:#4AFF56> ⓘ Information:"
+    - "<white> Sets the villager badge"
+    - "<white> level to <color:#FFD700>%level%<white>."
+    - ""
+    - "<color:#FAE033> ♫ Click to select!"
+  btn-back: ' <color:#FF4848>(←) Back </color>'
+  btn-back-lore: []

@@ -52,7 +52,7 @@ public class MainMenuGUI implements Listener {
         meta.displayName(name);
         java.util.List<Component> loreList = new java.util.ArrayList<>();
         for (String l : lore) {
-            loreList.add(Component.text(l));
+            loreList.add(plugin.getConfigManager().parseString(l).decoration(net.kyori.adventure.text.format.TextDecoration.ITALIC, false));
         }
         meta.lore(loreList);
         item.setItemMeta(meta);

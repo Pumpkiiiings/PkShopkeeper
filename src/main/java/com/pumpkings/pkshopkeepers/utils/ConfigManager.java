@@ -80,6 +80,14 @@ public class ConfigManager {
         return guiConfig.getStringList(path);
     }
 
+    public List<net.kyori.adventure.text.Component> getLoreComponents(String path) {
+        List<net.kyori.adventure.text.Component> result = new java.util.ArrayList<>();
+        for (String line : guiConfig.getStringList(path)) {
+            result.add(parseString(line).decoration(net.kyori.adventure.text.format.TextDecoration.ITALIC, false));
+        }
+        return result;
+    }
+
     public Component parseString(String text) {
         if (text == null) return Component.empty();
         

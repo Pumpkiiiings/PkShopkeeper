@@ -250,7 +250,7 @@ public class ShopEntityListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
         for (PkShop shop : shopManager.getShops()) {
-            if (shop.getEntityUUID().equals(entity.getUniqueId())) {
+            if (shop.getEntityUUID() != null && shop.getEntityUUID().equals(entity.getUniqueId())) {
                 event.setCancelled(true);
                 break;
             }

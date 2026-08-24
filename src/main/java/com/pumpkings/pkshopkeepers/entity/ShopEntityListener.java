@@ -33,6 +33,7 @@ public class ShopEntityListener implements Listener {
     private final PkShopkeepers plugin;
     private final ShopManager shopManager;
     private final Map<UUID, PkShop> activeShopViewers = new HashMap<>();
+    private final java.util.Set<UUID> lookingEntities = new java.util.HashSet<>();
 
     public ShopEntityListener(PkShopkeepers plugin, ShopManager shopManager) {
         this.plugin = plugin;
@@ -110,6 +111,7 @@ public class ShopEntityListener implements Listener {
                     e.customName(plugin.getConfigManager().parseString(shop.getName()));
                     e.setCustomNameVisible(plugin.getConfigManager().getBoolean("settings.always-show-nameplates", false));
                 }
+                startLookAtTask(e);
                 break;
             }
         }
@@ -150,7 +152,51 @@ public class ShopEntityListener implements Listener {
             }
             
             shop.setEntityUUID(entity.getUniqueId());
+            startLookAtTask(entity);
         }
+    }
+
+    private void startLookAtTask(Entity entity) {
+        if (!plugin.getConfigManager().getBoolean("settings.look-at-players", true)) return;
+        if (lookingEntities.contains(entity.getUniqueId())) return;
+        
+        lookingEntities.add(entity.getUniqueId());
+        double radius = plugin.getConfig().getDouble("settings.look-at-radius", 5.0);
+        
+        FoliaScheduler.runEntityTaskTimer(plugin, entity, () -> {
+            if (!entity.isValid() || entity.isDead()) {
+                lookingEntities.remove(entity.getUniqueId());
+                return;
+            }
+            
+            Player nearest = null;
+            double nearestDist = radius * radius;
+            
+            for (Entity nearby : entity.getNearbyEntities(radius, radius, radius)) {
+                if (nearby instanceof Player p) {
+                    if (p.getGameMode() == org.bukkit.GameMode.SPECTATOR) continue;
+                    double dist = p.getLocation().distanceSquared(entity.getLocation());
+                    if (dist < nearestDist) {
+                        nearest = p;
+                        nearestDist = dist;
+                    }
+                }
+            }
+            
+            if (nearest != null) {
+                Location loc = entity.getLocation();
+                Location pLoc = nearest.getEyeLocation();
+                double dx = pLoc.getX() - loc.getX();
+                double dy = pLoc.getY() - (loc.getY() + entity.getHeight() * 0.85);
+                double dz = pLoc.getZ() - loc.getZ();
+                
+                double distanceXZ = Math.sqrt(dx * dx + dz * dz);
+                float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                float pitch = (float) Math.toDegrees(Math.atan2(-dy, distanceXZ));
+                
+                entity.setRotation(yaw, pitch);
+            }
+        }, 20L, 3L);
     }
 
     public void spawnAllShops() {

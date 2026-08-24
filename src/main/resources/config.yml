@@ -115,6 +115,12 @@ settings:
   # Whether the shop nameplate is always visible through walls
   always-show-nameplates: false
 
+  # Whether shop entities should turn their heads to look at nearby players
+  look-at-players: true
+  
+  # How close a player must be (in blocks) for the shop entity to look at them
+  look-at-radius: 5.0
+
   # Whether shop entities are not affected by gravity (they float)
   disable-gravity: false
 

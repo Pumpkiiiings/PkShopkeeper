@@ -100,7 +100,7 @@ public class ShopEntityListener implements Listener {
                 found = true;
                 if (e instanceof org.bukkit.entity.LivingEntity) {
                     org.bukkit.entity.LivingEntity le = (org.bukkit.entity.LivingEntity) e;
-                    le.setAI(true);
+                    le.setAI(false);
                     le.setCollidable(false);
                     org.bukkit.attribute.Attribute movSpeedAttr = org.bukkit.Registry.ATTRIBUTE.get(org.bukkit.NamespacedKey.minecraft("generic.movement_speed"));
                     if (movSpeedAttr != null) { org.bukkit.attribute.AttributeInstance speed = le.getAttribute(movSpeedAttr); if (speed != null) speed.setBaseValue(0.0); }
@@ -117,7 +117,7 @@ public class ShopEntityListener implements Listener {
             Entity entity = shop.getLocation().getWorld().spawnEntity(shop.getLocation(), shop.getEntityType());
             if (entity instanceof org.bukkit.entity.LivingEntity) {
                 org.bukkit.entity.LivingEntity le = (org.bukkit.entity.LivingEntity) entity;
-                le.setAI(true);
+                le.setAI(false);
                 le.setCollidable(false);
                 org.bukkit.attribute.Attribute movSpeedAttr = org.bukkit.Registry.ATTRIBUTE.get(org.bukkit.NamespacedKey.minecraft("generic.movement_speed"));
                 if (movSpeedAttr != null) { org.bukkit.attribute.AttributeInstance speed = le.getAttribute(movSpeedAttr); if (speed != null) speed.setBaseValue(0.0); }

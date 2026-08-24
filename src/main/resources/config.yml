@@ -41,6 +41,8 @@ messages:
     - "<color:#AAAAAA>/pks migrate <color:#FFFFFF>- Migrate from the old plugin.</color>"
     - "<color:#AAAAAA>/pks link [id] [npc] <color:#FFFFFF>- Link a shop to an external NPC.</color>"
     - "<color:#AAAAAA>/pks unlink [id] <color:#FFFFFF>- Unlink a shop from an external NPC.</color>"
+    - "<color:#AAAAAA>/pks tp [name] <color:#FFFFFF>- Teleport to a shop.</color>"
+    - "<color:#AAAAAA>/pks tphere [name] <color:#FFFFFF>- Teleport a shop to you.</color>"
 
   # Whois Command
   whois-nearest: "<color:#AAAAAA>The nearest Shopkeeper is:</color>"

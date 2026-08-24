@@ -141,6 +141,26 @@ public class CommandManager {
             var whoisSub = Commands.literal("whois")
                     .executes(new WhoisCommand(plugin));
 
+            var tpSub = Commands.literal("tp")
+                    .then(Commands.argument("name", StringArgumentType.string())
+                        .suggests((ctx, builder) -> {
+                            for (com.pumpkings.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest("\"" + shop.getName() + "\"");
+                            }
+                            return builder.buildFuture();
+                        })
+                    .executes(new TpCommand(plugin)));
+
+            var tpHereSub = Commands.literal("tphere")
+                    .then(Commands.argument("name", StringArgumentType.string())
+                        .suggests((ctx, builder) -> {
+                            for (com.pumpkings.pkshopkeepers.shop.PkShop shop : plugin.getShopManager().getShops()) {
+                                builder.suggest("\"" + shop.getName() + "\"");
+                            }
+                            return builder.buildFuture();
+                        })
+                    .executes(new TpHereCommand(plugin)));
+
             rootCommand.then(createSub);
             rootCommand.then(openSub);
             rootCommand.then(listSub);
@@ -155,6 +175,8 @@ public class CommandManager {
             rootCommand.then(fixAllSub);
             rootCommand.then(fixTradersSub);
             rootCommand.then(whoisSub);
+            rootCommand.then(tpSub);
+            rootCommand.then(tpHereSub);
 
             commands.register(rootCommand.build(), "PkShopkeepers main command", java.util.List.of("pks"));
         });

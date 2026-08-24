@@ -35,6 +35,8 @@ All commands require `pkshopkeepers.admin` permission.
 | `/pks give` | Give yourself a shop creation egg |
 | `/pks link <shop> <npc>` | Link a shop to a FancyNpcs/AxoNPCs NPC |
 | `/pks unlink <shop>` | Unlink a shop from an external NPC |
+| `/pks tp <name>` | Teleport to a shop by name |
+| `/pks tphere <name>` | Teleport a shop to your current location |
 | `/pks compare <id>` | Compare inventory items against a shop's trades |
 | `/pks fix <id> <tradeIndex> <action>` | Fix an NBT mismatch in a specific trade slot |
 | `/pks fixall <id\|all>` | Fix all matching trades across one or all shops |

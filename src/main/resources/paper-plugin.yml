@@ -1,5 +1,5 @@
 name: PkShopkeepers
-version: 1.5
+version: 1.6
 main: com.pumpkings.pkshopkeepers.PkShopkeepers
 api-version: '1.21'
 description: A modern re-implementation of Shopkeepers

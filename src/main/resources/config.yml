@@ -3,7 +3,7 @@ messages:
   #         PkShopkeepers Message Configuration          #
   # ---------------------------------------------------- #
 
-  prefix: "<b><color:#AEDA50><b>SHOPS</b></color></b> <color:#B2B2B2>»</color> "
+  prefix: "<b><color:#AEDA50><b>PkShopkeepers</b></color></b> <color:#B2B2B2>»</color> "
   no-permission: "<color:#FF4C4C>You don't have permission to do that.</color>"
   only-players: "<color:#FF4C4C>This command can only be executed by a player.</color>"
   shop-created: "<color:#55DA50>Shop created. Use Shift+Right-Click to edit it.</color>"

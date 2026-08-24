@@ -1,115 +1,121 @@
 messages:
-  prefix: "<bold><gradient:#FFD700:#FF8C00>PKSHOPKEEPERS</gradient></bold> <#555555>| <reset>"
-  no-permission: "<#FF0055>You don't have permission to do that."
-  only-players: "<#FF0055>Only players can execute this command."
-  shop-created: "<#00FF77>Shop created. Use Shift+Right-Click to edit it."
-  shop-deleted: "<#FF0055>Shop deleted."
-  shops-deleted: "<#00FF77>Deleted <white>%count% <#00FF77>nearby shops."
-  player-not-found: "<#FF0055>Player not found."
-  shop-not-found: "<#FF0055>Shop not found."
-  opening-shop: "<#00FF77>Opening shop <white>%id% <#00FF77>for <white>%player%"
-  shop-saved: "<#00FF77>Shop saved successfully."
-  name-changed: "<#00FF77>Name changed to: <white>%name%"
-  enter-name: "<#FFE300>Type the new name in chat <#AAAAAA>(supports MiniMessage):"
-  reloaded: "<#00FF77>Shops and configuration reloaded."
-  
+  # ---------------------------------------------------- #
+  #         PkShopkeepers Message Configuration          #
+  # ---------------------------------------------------- #
+
+  prefix: "<b><color:#AEDA50><b>SHOPS</b></color></b> <color:#B2B2B2>»</color> "
+  no-permission: "<color:#FF4C4C>You don't have permission to do that.</color>"
+  only-players: "<color:#FF4C4C>This command can only be executed by a player.</color>"
+  shop-created: "<color:#55DA50>Shop created. Use Shift+Right-Click to edit it.</color>"
+  shop-deleted: "<color:#FF4C4C>Shop deleted successfully.</color>"
+  shops-deleted: "<color:#55DA50>Deleted <color:#FFFFFF><count></color><color:#55DA50> nearby shops.</color>"
+  player-not-found: "<color:#FF4C4C>Player <color:#FFFFFF><target></color><color:#FF4C4C> was not found.</color>"
+  shop-not-found: "<color:#FF4C4C>No shop was found with that ID.</color>"
+  opening-shop: "<color:#55DA50>Opening shop <color:#FFFFFF>%id%</color><color:#55DA50> for <color:#FFFFFF>%player%</color><color:#55DA50>.</color>"
+  shop-saved: "<color:#55DA50>Shop saved successfully.</color>"
+  name-changed: "<color:#55DA50>Name changed to: <color:#FFFFFF>%name%</color><color:#55DA50>.</color>"
+  enter-name: "<color:#F4D03F>Type the new name in chat <color:#AAAAAA>(supports MiniMessage):</color>"
+  reloaded: "<color:#55DA50>Shops and configuration reloaded.</color>"
+
   # Miscellaneous Commands
-  given-egg: "<#00FF77>You have been given a shop creation egg."
-  link-success: "<#00FF77>Shop %id% successfully linked to NPC %npc%."
-  unlink-success: "<#00FF77>Shop %id% unlinked and restored to a Vanilla entity."
-  tp-no-location: "<#FF0055>That shop does not have a saved location."
-  tp-success: "<#00FF77>Teleported to shop: %name%"
-  tphere-success: "<#00FF77>Shop '%name%' has been moved to your current location."
-  tphere-warning: "<#FFE300>NOTE: This shop uses a linked external NPC ('%npc%'). To move the visual NPC, use the native command of your NPC plugin."
-  
+  given-egg: "<color:#55DA50>You have been given a shop creation egg.</color>"
+  link-success: "<color:#55DA50>Shop <color:#FFFFFF>%id%</color><color:#55DA50> successfully linked to NPC <color:#FFFFFF>%npc%</color><color:#55DA50>.</color>"
+  unlink-success: "<color:#55DA50>Shop <color:#FFFFFF>%id%</color><color:#55DA50> unlinked and restored to a Vanilla entity.</color>"
+  tp-no-location: "<color:#FF4C4C>That shop does not have a saved location.</color>"
+  tp-success: "<color:#55DA50>Teleported to shop: <color:#FFFFFF>%name%</color><color:#55DA50>.</color>"
+  tphere-success: "<color:#55DA50>Shop '<color:#FFFFFF>%name%</color><color:#55DA50>' has been moved to your location.</color>"
+  tphere-warning: "<color:#F4D03F>Note: This shop uses a linked external NPC ('<color:#FFFFFF>%npc%</color><color:#F4D03F>'). Move the visual NPC using your NPC plugin.</color>"
+
   # List Command
-  list-header: "<#FFE300>--- Shop List ---"
-  list-format: "<#AAAAAA>- <#00FF77>%id% <#555555>(<#AAAAAA>%name%<#555555>)"
-  
+  list-header: "<color:#F4D03F>--- Shop List ---</color>"
+  list-format: "<color:#AAAAAA>- <color:#FFFFFF>%id% <color:#AAAAAA>(<color:#FFFFFF>%name%<color:#AAAAAA>)</color>"
+
   # Help Command
   help-message:
-    - "<#FFE300>--- PkShopkeepers Help ---"
-    - "<#AAAAAA>/pks create [type] <#555555>- <white>Create a shop"
-    - "<#AAAAAA>/pks open [id] [player] <#555555>- <white>Open shop menu for a player"
-    - "<#AAAAAA>/pks list <#555555>- <white>List shops"
-    - "<#AAAAAA>/pks reload <#555555>- <white>Reload shops and config"
-    - "<#AAAAAA>/pks remove <#555555>- <white>Remove nearby shops (radius 3)"
-    - "<#AAAAAA>/pks migrate <#555555>- <white>Migrate from the old plugin"
-    - "<#AAAAAA>/pks link [id] [npc] <#555555>- <white>Link a shop to an external NPC"
-    - "<#AAAAAA>/pks unlink [id] <#555555>- <white>Unlink a shop from an external NPC"
-  
-  # Whois Command
-  whois-nearest: "<#00FF77>[PkShopkeepers] <white>The nearest Shopkeeper is:"
-  whois-name: "<#AAAAAA>Name: <white>%name%"
-  whois-id: "<#AAAAAA>ID: <#FFE300>%id%"
-  whois-copy: "<#AAAAAA>Click to copy: <underlined><#00FFFF>%id%"
-  whois-hover: "<#00FF77>Copy ID to clipboard"
-  whois-not-found: "<#FF0055>No shops found within a 5-block radius."
-  
-  # Manual Fix
-  fix-invalid-index: "<#FF0055>Invalid trade index."
-  fix-invalid-action: "<#FF0055>Invalid action. Use 'to_shop', 'to_inv', 'item1', 'item2' or 'result'."
-  fix-no-main-hand: "<#FF0055>You must be holding an item in your main hand."
-  fix-to-inv: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>The items required by trade <white>#%trade% <#AAAAAA>have been added to your inventory."
-  fix-to-shop: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>Trade <white>#%trade% <#AAAAAA>has been updated with the items in your hands."
-  fix-item1: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>Item 1 of trade <white>#%trade% <#AAAAAA>has been overwritten with the item in your hand."
-  fix-item2: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>Item 2 of trade <white>#%trade% <#AAAAAA>has been overwritten with the item in your hand."
-  fix-result: "<#555555>[<#00FF77>Fix<#555555>] <#AAAAAA>The result of trade <white>#%trade% <#AAAAAA>has been overwritten with the item in your hand."
-  fixall-success-all: "<#00FF77>Final Result: <white>%trades% <#AAAAAA>trades fixed in <white>%shops% <#AAAAAA>shops."
-  fixall-none-all: "<#FF0055>No matches found to update in any shop."
-  fixall-success-one: "<#00FF77>Final Result: <white>%trades% <#AAAAAA>trades fixed in shop <white>%shop%."
-  fixall-none-one: "<#FF0055>No items in your inventory matched any trade in this shop."
-  
-  # Compare Command
-  compare-title: "<#555555><strikethrough>             </strikethrough> <bold><gradient:#FFE300:#FFAA00>Inventory vs Shop Analysis: %name%</gradient></bold> <#555555><strikethrough>             </strikethrough>"
-  compare-footer: "<#555555><strikethrough>                                                                       </strikethrough>"
-  compare-exact: "<#555555>[<#AAAAAA>Trade #%trade% <#555555>| <#AAAAAA>%slot%<#555555>] <#00FF77>You have the exact item with sufficient quantity."
-  compare-amount: "<#555555>[<#AAAAAA>Trade #%trade% <#555555>| <#AAAAAA>%slot%<#555555>] <#FF0055>Exact item but insufficient quantity <#555555>(<#AAAAAA>You have <white>%has%<#AAAAAA>, needs <white>%needs%<#555555>)."
-  compare-reason-header: "<#555555>[<#AAAAAA>Trade #%trade% <#555555>| <#AAAAAA>%slot%<#555555>] <#AAAAAA>Analyzing differences for: <#00FFFF>%item%"
-  compare-no-meta: "  <#FF0055>Reason: <#AAAAAA>Your item has no Meta, but the shop requires it."
-  compare-has-meta: "  <#FF0055>Reason: <#AAAAAA>Your item has Meta, but the shop does not."
-  compare-name: "  <#FF0055>Reason: <#AAAAAA>Different display name."
-  compare-name-you: "    <#555555>» <#AAAAAA>Your item: <white>%you%"
-  compare-name-shop: "    <#555555>» <#AAAAAA>Shop: <white>%shop%"
-  compare-cmd: "  <#FF0055>Reason: <#AAAAAA>CustomModelData mismatch."
-  compare-cmd-diff: "  <#FF0055>Reason: <#AAAAAA>Different CustomModelData <#555555>(<#AAAAAA>Yours: <white>%you% <#555555>| <#AAAAAA>Shop: <white>%shop%<#555555>)."
-  compare-lore-exists: "  <#FF0055>Reason: <#AAAAAA>Lore existence mismatch."
-  compare-lore-size: "  <#FF0055>Reason: <#AAAAAA>Different number of lore lines <#555555>(<#AAAAAA>Yours: <white>%you% <#555555>| <#AAAAAA>Shop: <white>%shop%<#555555>)."
-  compare-lore-line: "  <#FF0055>Reason: <#AAAAAA>Lore line <white>%line% <#AAAAAA>differs."
-  compare-lore-you: "    <#555555>» <#AAAAAA>Yours: <white>%you%"
-  compare-lore-shop: "    <#555555>» <#AAAAAA>Shop: <white>%shop%"
-  compare-enchants: "  <#FF0055>Reason: <#AAAAAA>Enchantments do not match."
+    - "<color:#55DA50>PkShopkeepers Commands</color>"
+    - "<color:#AAAAAA>/pks create [type] <color:#FFFFFF>- Create a shop.</color>"
+    - "<color:#AAAAAA>/pks open [id] [player] <color:#FFFFFF>- Open shop for a player.</color>"
+    - "<color:#AAAAAA>/pks list <color:#FFFFFF>- List all shops.</color>"
+    - "<color:#AAAAAA>/pks reload <color:#FFFFFF>- Reload shops and config.</color>"
+    - "<color:#AAAAAA>/pks remove <color:#FFFFFF>- Remove nearby shops (radius 3).</color>"
+    - "<color:#AAAAAA>/pks migrate <color:#FFFFFF>- Migrate from the old plugin.</color>"
+    - "<color:#AAAAAA>/pks link [id] [npc] <color:#FFFFFF>- Link a shop to an external NPC.</color>"
+    - "<color:#AAAAAA>/pks unlink [id] <color:#FFFFFF>- Unlink a shop from an external NPC.</color>"
 
-  type-changed: "<#00FF77>Type changed to <white>%type%"
-  baby-state: "<#00FF77>Baby state: <white>%state%"
+  # Whois Command
+  whois-nearest: "<color:#AAAAAA>The nearest Shopkeeper is:</color>"
+  whois-name: "<color:#AAAAAA>Name: <color:#FFFFFF>%name%</color>"
+  whois-id: "<color:#AAAAAA>ID: <color:#F4D03F>%id%</color>"
+  whois-copy: "<color:#AAAAAA>Click to copy: <underlined><color:#FFFFFF>%id%</color></underlined>"
+  whois-hover: "<color:#55DA50>Copy ID to clipboard</color>"
+  whois-not-found: "<color:#FF4C4C>No shops found within a 5-block radius.</color>"
+
+  # Manual Fix
+  fix-invalid-index: "<color:#FF4C4C>Invalid trade index.</color>"
+  fix-invalid-action: "<color:#FF4C4C>Invalid action. Use 'to_shop', 'to_inv', 'item1', 'item2' or 'result'.</color>"
+  fix-no-main-hand: "<color:#FF4C4C>You must be holding an item in your main hand.</color>"
+  fix-to-inv: "<color:#AAAAAA>[<color:#55DA50>Fix</color><color:#AAAAAA>] Items required by trade <color:#FFFFFF>#%trade% <color:#AAAAAA>added to your inventory.</color>"
+  fix-to-shop: "<color:#AAAAAA>[<color:#55DA50>Fix</color><color:#AAAAAA>] Trade <color:#FFFFFF>#%trade% <color:#AAAAAA>updated with the items in your hands.</color>"
+  fix-item1: "<color:#AAAAAA>[<color:#55DA50>Fix</color><color:#AAAAAA>] Item 1 of trade <color:#FFFFFF>#%trade% <color:#AAAAAA>overwritten with item in hand.</color>"
+  fix-item2: "<color:#AAAAAA>[<color:#55DA50>Fix</color><color:#AAAAAA>] Item 2 of trade <color:#FFFFFF>#%trade% <color:#AAAAAA>overwritten with item in hand.</color>"
+  fix-result: "<color:#AAAAAA>[<color:#55DA50>Fix</color><color:#AAAAAA>] Result of trade <color:#FFFFFF>#%trade% <color:#AAAAAA>overwritten with item in hand.</color>"
+  fixall-success-all: "<color:#55DA50>Done! Fixed <color:#FFFFFF>%trades% <color:#55DA50>trades across <color:#FFFFFF>%shops% <color:#55DA50>shops.</color>"
+  fixall-none-all: "<color:#FF4C4C>No matches found to update in any shop.</color>"
+  fixall-success-one: "<color:#55DA50>Done! Fixed <color:#FFFFFF>%trades% <color:#55DA50>trades in shop <color:#FFFFFF>%shop%<color:#55DA50>.</color>"
+  fixall-none-one: "<color:#FF4C4C>No items in your inventory matched any trade in this shop.</color>"
+
+  # Compare Command
+  compare-title: "<color:#AAAAAA><strikethrough>          </strikethrough> <bold><color:#F4D03F>Inventory vs Shop: <color:#FFFFFF>%name%</color></bold> <color:#AAAAAA><strikethrough>          </strikethrough>"
+  compare-footer: "<color:#AAAAAA><strikethrough>                                                                       </strikethrough>"
+  compare-exact: "<color:#AAAAAA>[Trade <color:#FFFFFF>#%trade% <color:#AAAAAA>| <color:#FFFFFF>%slot%<color:#AAAAAA>] <color:#55DA50>Exact item with sufficient quantity.</color>"
+  compare-amount: "<color:#AAAAAA>[Trade <color:#FFFFFF>#%trade% <color:#AAAAAA>| <color:#FFFFFF>%slot%<color:#AAAAAA>] <color:#FF4C4C>Exact item but insufficient quantity <color:#AAAAAA>(Have <color:#FFFFFF>%has%<color:#AAAAAA>, needs <color:#FFFFFF>%needs%<color:#AAAAAA>).</color>"
+  compare-reason-header: "<color:#AAAAAA>[Trade <color:#FFFFFF>#%trade% <color:#AAAAAA>| <color:#FFFFFF>%slot%<color:#AAAAAA>] Analyzing differences for: <color:#FFFFFF>%item%</color>"
+  compare-no-meta: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Your item has no Meta, but the shop requires it.</color>"
+  compare-has-meta: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Your item has Meta, but the shop does not.</color>"
+  compare-name: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Different display name.</color>"
+  compare-name-you: "    <color:#AAAAAA>» Yours: <color:#FFFFFF>%you%</color>"
+  compare-name-shop: "    <color:#AAAAAA>» Shop: <color:#FFFFFF>%shop%</color>"
+  compare-cmd: "  <color:#FF4C4C>Reason: <color:#AAAAAA>CustomModelData mismatch.</color>"
+  compare-cmd-diff: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Different CustomModelData <color:#AAAAAA>(Yours: <color:#FFFFFF>%you% <color:#AAAAAA>| Shop: <color:#FFFFFF>%shop%<color:#AAAAAA>).</color>"
+  compare-lore-exists: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Lore existence mismatch.</color>"
+  compare-lore-size: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Different lore line count <color:#AAAAAA>(Yours: <color:#FFFFFF>%you% <color:#AAAAAA>| Shop: <color:#FFFFFF>%shop%<color:#AAAAAA>).</color>"
+  compare-lore-line: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Lore line <color:#FFFFFF>%line% <color:#AAAAAA>differs.</color>"
+  compare-lore-you: "    <color:#AAAAAA>» Yours: <color:#FFFFFF>%you%</color>"
+  compare-lore-shop: "    <color:#AAAAAA>» Shop: <color:#FFFFFF>%shop%</color>"
+  compare-enchants: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Enchantments do not match.</color>"
+
+  type-changed: "<color:#55DA50>Entity type changed to <color:#FFFFFF>%type%</color><color:#55DA50>.</color>"
+  baby-state: "<color:#55DA50>Baby state: <color:#FFFFFF>%state%</color><color:#55DA50>.</color>"
   baby-state-on: "Yes"
   baby-state-off: "No"
-  villager-level-changed: "<#00FF77>Villager level changed to <white>%level%"
-  villager-type-changed: "<#00FF77>Villager biome changed to <white>%type%"
-  profession-changed: "<#00FF77>Profession changed to <white>%profession%"
-  coming-soon: "<#FF0055>Coming soon..."
-  max-shops-reached: "<#FF0055>You have reached the limit of <white>%max% <#FF0055>shops."
-  invalid-entity: "<#FF0055>Invalid or disallowed entity type."
-  scan-no-plugin: "<#FF0055>The original Shopkeepers plugin is not installed or active. Cannot scan."
-  migrate-no-plugin: "<#FF0055>The original Shopkeepers plugin is not installed or active. Cannot migrate."
-  migrate-success: "<#00FF77>Migration successful! Migrated <white>%count% <#00FF77>shopkeepers to the new format."
-  migrate-instruction: "<#FFE300>You can now stop the server, delete the old Shopkeepers folder, and everything will work natively."
-  migrate-scan-title: "<#00FFFF>--- Migration Scan ---"
-  parse-error: "<#FF0055>Error while parsing: %error%"
-  migrate-scan-ready: "<#FFFFFF>Admin Shops found: <#00FF77>%count% <#AAAAAA>(Ready to migrate)"
-  migrate-scan-skipped: "<#FFFFFF>Other Shops: <#FF0055>%skipped% <#AAAAAA>(Will be skipped)"
-  migrate-scan-cmd: "<#FFE300>When ready, run: <#00FFFF>/pks migrate start"
+  villager-level-changed: "<color:#55DA50>Villager level changed to <color:#FFFFFF>%level%</color><color:#55DA50>.</color>"
+  villager-type-changed: "<color:#55DA50>Villager biome changed to <color:#FFFFFF>%type%</color><color:#55DA50>.</color>"
+  profession-changed: "<color:#55DA50>Profession changed to <color:#FFFFFF>%profession%</color><color:#55DA50>.</color>"
+  coming-soon: "<color:#FF4C4C>Coming soon...</color>"
+  max-shops-reached: "<color:#FF4C4C>You have reached the shop limit of <color:#FFFFFF>%max%</color><color:#FF4C4C>.</color>"
+  invalid-entity: "<color:#FF4C4C>Invalid or disallowed entity type.</color>"
+
+  # Migration
+  scan-no-plugin: "<color:#FF4C4C>The original Shopkeepers plugin is not installed or active. Cannot scan.</color>"
+  migrate-no-plugin: "<color:#FF4C4C>The original Shopkeepers plugin is not installed or active. Cannot migrate.</color>"
+  migrate-success: "<color:#55DA50>Migration successful! Migrated <color:#FFFFFF>%count% <color:#55DA50>shopkeepers to the new format.</color>"
+  migrate-instruction: "<color:#F4D03F>You can now stop the server, delete the old Shopkeepers folder, and everything will work natively.</color>"
+  migrate-scan-title: "<color:#AAAAAA>--- Migration Scan ---</color>"
+  parse-error: "<color:#FF4C4C>Error while parsing: <color:#FFFFFF>%error%</color>"
+  migrate-scan-ready: "<color:#AAAAAA>Admin Shops found: <color:#55DA50>%count% <color:#AAAAAA>(Ready to migrate)</color>"
+  migrate-scan-skipped: "<color:#AAAAAA>Other Shops: <color:#FF4C4C>%skipped% <color:#AAAAAA>(Will be skipped)</color>"
+  migrate-scan-cmd: "<color:#F4D03F>When ready, run: <color:#FFFFFF>/pks migrate start</color>"
 
 settings:
   # Silence shop entities completely
   silence-shop-entities: true
-  
+
   # Whether the shop nameplate is always visible through walls
   always-show-nameplates: false
-  
+
   # Whether shop entities are not affected by gravity (they float)
   disable-gravity: false
-  
+
   # Maximum shops per player (-1 = unlimited)
   max-shops-per-player: -1
 

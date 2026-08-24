@@ -96,6 +96,7 @@ messages:
   coming-soon: "<color:#FF4C4C>Coming soon...</color>"
   max-shops-reached: "<color:#FF4C4C>You have reached the shop limit of <color:#FFFFFF>%max%</color><color:#FF4C4C>.</color>"
   invalid-entity: "<color:#FF4C4C>Invalid or disallowed entity type.</color>"
+  fixtraders-success: "<color:#55DA50>Se removieron <color:#FFFFFF>%removed%</color> aldeanos huérfanos y se arreglaron <color:#FFFFFF>%fixed%</color> tiendas.</color>"
 
   # Migration
   scan-no-plugin: "<color:#FF4C4C>The original Shopkeepers plugin is not installed or active. Cannot scan.</color>"

@@ -102,8 +102,8 @@ public class ShopEntityListener implements Listener {
                     org.bukkit.entity.LivingEntity le = (org.bukkit.entity.LivingEntity) e;
                     le.setAI(true);
                     le.setCollidable(false);
-                    org.bukkit.attribute.AttributeInstance speed = le.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED);
-                    if (speed != null) speed.setBaseValue(0.0);
+                    org.bukkit.attribute.Attribute movSpeedAttr = org.bukkit.Registry.ATTRIBUTE.get(org.bukkit.NamespacedKey.minecraft("generic.movement_speed"));
+                    if (movSpeedAttr != null) { org.bukkit.attribute.AttributeInstance speed = le.getAttribute(movSpeedAttr); if (speed != null) speed.setBaseValue(0.0); }
                     le.setInvulnerable(true);
                     le.setSilent(true);
                     e.customName(plugin.getConfigManager().parseString(shop.getName()));
@@ -119,8 +119,8 @@ public class ShopEntityListener implements Listener {
                 org.bukkit.entity.LivingEntity le = (org.bukkit.entity.LivingEntity) entity;
                 le.setAI(true);
                 le.setCollidable(false);
-                org.bukkit.attribute.AttributeInstance speed = le.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MOVEMENT_SPEED);
-                if (speed != null) speed.setBaseValue(0.0);
+                org.bukkit.attribute.Attribute movSpeedAttr = org.bukkit.Registry.ATTRIBUTE.get(org.bukkit.NamespacedKey.minecraft("generic.movement_speed"));
+                if (movSpeedAttr != null) { org.bukkit.attribute.AttributeInstance speed = le.getAttribute(movSpeedAttr); if (speed != null) speed.setBaseValue(0.0); }
                 le.setInvulnerable(true);
                 entity.setCustomNameVisible(plugin.getConfigManager().getBoolean("settings.always-show-nameplates", false));
             }

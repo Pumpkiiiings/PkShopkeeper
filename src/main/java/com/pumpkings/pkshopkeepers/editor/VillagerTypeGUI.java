@@ -25,6 +25,7 @@ public class VillagerTypeGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
+        if (!plugin.getConfigManager().getBoolean("settings.allow-villager-type-change", true)) return;
         String titleStr = plugin.getConfigManager().getGuiString("villager-type-menu.title", "Select Biome");
         Component title = plugin.getConfigManager().parseString(titleStr);
         Inventory inv = Bukkit.createInventory(null, 27, title);
@@ -74,6 +75,7 @@ public class VillagerTypeGUI implements Listener {
         Component title = plugin.getConfigManager().parseString(titleStr);
         if (!event.getView().title().equals(title)) return;
         event.setCancelled(true);
+        if (!plugin.getConfigManager().getBoolean("settings.allow-villager-type-change", true)) return;
         
         ItemStack clicked = event.getCurrentItem();
         if (clicked == null || clicked.getType() == Material.AIR) return;
@@ -88,8 +90,7 @@ public class VillagerTypeGUI implements Listener {
         
         if (selected != null) {
             shop.setVillagerType(selected);
-            plugin.getShopEntityListener().removeEntity(shop);
-            plugin.getShopEntityListener().spawnShop(shop);
+            plugin.getShopEntityListener().respawnShop(shop);
             plugin.getShopManager().saveShops();
             player.sendMessage(plugin.getConfigManager().getMessage("villager-type-changed", "%type%", selected.getKey().getKey().toUpperCase()));
             plugin.getMainMenuGUI().openMenu(player, shop);

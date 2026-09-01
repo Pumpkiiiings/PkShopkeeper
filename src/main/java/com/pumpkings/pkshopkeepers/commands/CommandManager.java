@@ -31,8 +31,19 @@ public class CommandManager {
                     .executes(new CreateCommand(plugin))
                     .then(Commands.argument("type", com.mojang.brigadier.arguments.StringArgumentType.word())
                         .suggests((ctx, builder) -> {
-                            for (org.bukkit.entity.EntityType type : org.bukkit.entity.EntityType.values()) {
-                                if (type.isSpawnable()) builder.suggest(type.name().toLowerCase());
+                            java.util.List<String> configuredTypes = plugin.getConfigManager().getStringList("settings.enabled-living-shops");
+                            if (configuredTypes.isEmpty()) {
+                                configuredTypes = java.util.Arrays.stream(org.bukkit.entity.EntityType.values())
+                                        .filter(type -> type.isAlive() && type.isSpawnable())
+                                        .map(Enum::name).toList();
+                            }
+                            for (String configuredType : configuredTypes) {
+                                try {
+                                    org.bukkit.entity.EntityType type = org.bukkit.entity.EntityType.valueOf(configuredType.toUpperCase());
+                                    if (type.isAlive() && type.isSpawnable()) builder.suggest(type.name().toLowerCase());
+                                } catch (IllegalArgumentException ignored) {
+                                    // Invalid configuration entries are ignored in suggestions and rejected on execution.
+                                }
                             }
                             return builder.buildFuture();
                         })

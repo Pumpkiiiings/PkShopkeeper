@@ -134,8 +134,10 @@ public class ShopEditorListener implements Listener {
         if (event.getView().title().equals(title)) {
             Player player = (Player) event.getPlayer();
             if (plugin.getShopManager().getEditingPlayers().containsKey(player.getUniqueId())) {
-                savePage(player, event.getInventory());
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                if (plugin.getConfigManager().getBoolean("settings.auto-save-on-close", true)) {
+                    savePage(player, event.getInventory());
+                }
+                com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTaskLater(plugin, player, () -> {
                     if (player.getOpenInventory().getTopInventory().getSize() != 54) { // Not in a GUI anymore
                         plugin.getShopManager().getEditingPlayers().remove(player.getUniqueId());
                         editingPages.remove(player.getUniqueId());

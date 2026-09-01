@@ -54,6 +54,7 @@ public class EntitySelectorGUI implements Listener {
             if (slot >= 45) break;
             try {
                 EntityType type = EntityType.valueOf(enabledTypes.get(i).toUpperCase());
+                if (!type.isAlive() || !type.isSpawnable()) continue;
                 inv.setItem(slot++, createIcon(type));
             } catch (Exception ignored) { }
         }
@@ -64,9 +65,12 @@ public class EntitySelectorGUI implements Listener {
 
         inv.setItem(45, createItem(Material.ARROW, plugin.getConfigManager().getMenuComponent("entity-selector.btn-prev-page")));
         inv.setItem(46, createItem(Material.BARRIER, plugin.getConfigManager().getMenuComponent("entity-selector.btn-back")));
-        inv.setItem(48, createItem(Material.TOTEM_OF_UNDYING, plugin.getConfigManager().getMenuComponent("entity-selector.btn-baby-toggle")));
+        if (plugin.getConfigManager().getBoolean("settings.allow-baby-shops", true)) {
+            inv.setItem(48, createItem(Material.TOTEM_OF_UNDYING, plugin.getConfigManager().getMenuComponent("entity-selector.btn-baby-toggle")));
+        }
         
-        if (shop.getEntityType() == EntityType.VILLAGER) {
+        if (shop.getEntityType() == EntityType.VILLAGER
+                && plugin.getConfigManager().getBoolean("settings.allow-profession-change", true)) {
             inv.setItem(50, createItem(Material.LECTERN, plugin.getConfigManager().getMenuComponent("entity-selector.btn-change-prof")));
         }
         
@@ -138,14 +142,15 @@ public class EntitySelectorGUI implements Listener {
             } else if (slot == 53) {
                 int page = selectorPages.getOrDefault(player.getUniqueId(), 0);
                 openMenu(player, shop, page + 1);
-            } else if (slot == 48) {
+            } else if (slot == 48 && plugin.getConfigManager().getBoolean("settings.allow-baby-shops", true)) {
                 shop.setBaby(!shop.isBaby());
                 respawnShop(shop);
                 String stateLabel = shop.isBaby()
                     ? plugin.getConfigManager().getRawString("messages.baby-state-on", "Sí")
                     : plugin.getConfigManager().getRawString("messages.baby-state-off", "No");
                 player.sendMessage(plugin.getConfigManager().getMessage("baby-state", "%state%", stateLabel));
-            } else if (slot == 50 && shop.getEntityType() == EntityType.VILLAGER) {
+            } else if (slot == 50 && shop.getEntityType() == EntityType.VILLAGER
+                    && plugin.getConfigManager().getBoolean("settings.allow-profession-change", true)) {
                 plugin.getProfessionSelectorGUI().openMenu(player, shop);
             } else if (slot == 46) {
                 plugin.getMainMenuGUI().openMenu(player, shop);
@@ -155,10 +160,7 @@ public class EntitySelectorGUI implements Listener {
 
     private void respawnShop(PkShop shop) {
         plugin.getShopManager().saveShops();
-        plugin.getServer().getScheduler().runTask(plugin, () -> {
-            plugin.getShopEntityListener().removeEntity(shop);
-            plugin.getShopEntityListener().spawnShop(shop);
-        });
+        plugin.getShopEntityListener().respawnShop(shop);
     }
 
     @EventHandler
@@ -166,7 +168,7 @@ public class EntitySelectorGUI implements Listener {
         Component title = plugin.getConfigManager().getMenuComponent("entity-selector.title");
         if (event.getView().title().equals(title)) {
             Player player = (Player) event.getPlayer();
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTaskLater(plugin, player, () -> {
                 if (player.getOpenInventory().getTopInventory().getSize() != 54 && player.getOpenInventory().getTopInventory().getSize() != 27) {
                     plugin.getShopManager().getEditingPlayers().remove(player.getUniqueId());
                     selectorPages.remove(player.getUniqueId());

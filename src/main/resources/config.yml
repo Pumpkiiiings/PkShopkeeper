@@ -8,7 +8,7 @@ messages:
   only-players: "<color:#FF4C4C>This command can only be executed by a player.</color>"
   shop-created: "<color:#55DA50>Shop created. Use Shift+Right-Click to edit it.</color>"
   shop-deleted: "<color:#FF4C4C>Shop deleted successfully.</color>"
-  shops-deleted: "<color:#55DA50>Deleted <color:#FFFFFF><count></color><color:#55DA50> nearby shops.</color>"
+  shops-deleted: "<color:#55DA50>Deleted <color:#FFFFFF>%count%</color><color:#55DA50> nearby shops.</color>"
   player-not-found: "<color:#FF4C4C>Player <color:#FFFFFF><target></color><color:#FF4C4C> was not found.</color>"
   shop-not-found: "<color:#FF4C4C>No shop was found with that ID.</color>"
   opening-shop: "<color:#55DA50>Opening shop <color:#FFFFFF>%id%</color><color:#55DA50> for <color:#FFFFFF>%player%</color><color:#55DA50>.</color>"
@@ -50,7 +50,7 @@ messages:
   whois-id: "<color:#AAAAAA>ID: <color:#F4D03F>%id%</color>"
   whois-copy: "<color:#AAAAAA>Click to copy: <underlined><color:#FFFFFF>%id%</color></underlined>"
   whois-hover: "<color:#55DA50>Copy ID to clipboard</color>"
-  whois-not-found: "<color:#FF4C4C>No shops found within a 5-block radius.</color>"
+  whois-not-found: "<color:#FF4C4C>No shops found within a <color:#FFFFFF>%radius%</color><color:#FF4C4C>-block radius.</color>"
 
   # Manual Fix
   fix-invalid-index: "<color:#FF4C4C>Invalid trade index.</color>"
@@ -85,6 +85,14 @@ messages:
   compare-lore-you: "    <color:#AAAAAA>» Yours: <color:#FFFFFF>%you%</color>"
   compare-lore-shop: "    <color:#AAAAAA>» Shop: <color:#FFFFFF>%shop%</color>"
   compare-enchants: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Enchantments do not match.</color>"
+  compare-unbreakable: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Unbreakable state does not match.</color>"
+  compare-unbreakable-values: "    <color:#AAAAAA>» Yours: <color:#FFFFFF>%you%</color> <color:#AAAAAA>| Shop: <color:#FFFFFF>%shop%</color>"
+  compare-item-flags: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Item flags do not match.</color>"
+  compare-attribute-presence: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Attribute modifier presence does not match.</color>"
+  compare-attribute-values: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Attribute modifier values do not match.</color>"
+  compare-pdc: "  <color:#FF4C4C>Reason: <color:#AAAAAA>Persistent data keys do not match.</color>"
+  compare-components: "  <color:#FF4C4C>The mismatch is in a specialized Minecraft 1.21 item component.</color>"
+  compare-fix-hint: "  <color:#AAAAAA>Use <color:#F4D03F>/pks fix %id% %trade% %slot%</color> to replace this trade item.</color>"
 
   type-changed: "<color:#55DA50>Entity type changed to <color:#FFFFFF>%type%</color><color:#55DA50>.</color>"
   baby-state: "<color:#55DA50>Baby state: <color:#FFFFFF>%state%</color><color:#55DA50>.</color>"
@@ -96,7 +104,7 @@ messages:
   coming-soon: "<color:#FF4C4C>Coming soon...</color>"
   max-shops-reached: "<color:#FF4C4C>You have reached the shop limit of <color:#FFFFFF>%max%</color><color:#FF4C4C>.</color>"
   invalid-entity: "<color:#FF4C4C>Invalid or disallowed entity type.</color>"
-  fixtraders-success: "<color:#55DA50>Se removieron <color:#FFFFFF>%removed%</color> aldeanos huérfanos y se arreglaron <color:#FFFFFF>%fixed%</color> tiendas.</color>"
+  fixtraders-success: "<color:#55DA50>Removed <color:#FFFFFF>%removed%</color> duplicate managed entities and repaired <color:#FFFFFF>%fixed%</color> shops.</color>"
 
   # Migration
   scan-no-plugin: "<color:#FF4C4C>The original Shopkeepers plugin is not installed or active. Cannot scan.</color>"
@@ -110,6 +118,9 @@ messages:
   migrate-scan-cmd: "<color:#F4D03F>When ready, run: <color:#FFFFFF>/pks migrate start</color>"
 
 settings:
+  # Name assigned to newly created shops
+  default-shop-name: "New Shop"
+
   # Silence shop entities completely
   silence-shop-entities: true
 
@@ -130,6 +141,12 @@ settings:
 
   # Interaction radius in blocks for Shift+Right-Click editing
   shop-interaction-radius: 5
+
+  # Radius used by /pks remove
+  remove-radius: 3.0
+
+  # Radius used by /pks whois
+  whois-radius: 5.0
 
   # Allow baby mode for shop entities
   allow-baby-shops: true

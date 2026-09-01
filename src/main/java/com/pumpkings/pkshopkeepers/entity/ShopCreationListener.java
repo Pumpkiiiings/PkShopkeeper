@@ -10,7 +10,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.entity.EntityType;
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
-import java.util.UUID;
 
 public class ShopCreationListener implements Listener {
 
@@ -36,19 +35,30 @@ public class ShopCreationListener implements Listener {
                 event.getPlayer().sendMessage(plugin.getConfigManager().getMessage("no-permission"));
                 return;
             }
+
+            int maxShops = plugin.getConfigManager().getInt("settings.max-shops-per-player", -1);
+            if (maxShops >= 0 && plugin.getShopManager().countShopsOwnedBy(event.getPlayer().getUniqueId()) >= maxShops) {
+                event.getPlayer().sendMessage(plugin.getConfigManager().getMessage("max-shops-reached", "%max%", String.valueOf(maxShops)));
+                return;
+            }
+
+            java.util.List<String> allowedTypes = plugin.getConfigManager().getStringList("settings.enabled-living-shops");
+            if (!allowedTypes.isEmpty() && allowedTypes.stream().noneMatch(type -> type.equalsIgnoreCase(EntityType.VILLAGER.name()))) {
+                event.getPlayer().sendMessage(plugin.getConfigManager().getMessage("invalid-entity"));
+                return;
+            }
             
             String newId = plugin.getShopManager().getNextId();
             PkShop newShop = new PkShop(newId);
-            newShop.setName("New Shop");
+            newShop.setName(plugin.getConfigManager().getRawString("settings.default-shop-name", "New Shop"));
             newShop.setLocation(event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5));
+            newShop.setOwnerUUID(event.getPlayer().getUniqueId());
             newShop.setEntityType(EntityType.VILLAGER);
             
             plugin.getShopManager().addShop(newShop);
             plugin.getShopManager().saveShops();
             
-            com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runRegionTask(plugin, newShop.getLocation(), () -> {
-                new ShopEntityListener(plugin, plugin.getShopManager()).spawnShop(newShop);
-            });
+            plugin.getShopEntityListener().spawnShop(newShop);
             
             event.getPlayer().sendMessage(plugin.getConfigManager().getMessage("shop-created"));
         }

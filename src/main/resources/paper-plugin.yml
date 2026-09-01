@@ -12,6 +12,9 @@ dependencies:
     FancyNpcs:
       load: BEFORE
       required: false
+    AxoNPCs:
+      load: BEFORE
+      required: false
     Shopkeepers:
       load: BEFORE
       required: false

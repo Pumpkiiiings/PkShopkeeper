@@ -4,8 +4,10 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
@@ -27,36 +29,25 @@ public class FixTradersCommand implements Command<CommandSourceStack> {
             return 0;
         }
 
-        int removed = 0;
-        int fixed = 0;
-
+        List<CompletableFuture<Integer>> repairs = new ArrayList<>();
         for (PkShop shop : plugin.getShopManager().getShops()) {
             if (shop.getLocation() == null || shop.getLocation().getWorld() == null || shop.getNpcId() != null) continue;
-            
-            if (!shop.getLocation().getChunk().isLoaded()) continue;
+            repairs.add(plugin.getShopEntityListener().repairShop(shop).exceptionally(error -> {
+                plugin.getLogger().warning("Could not repair shop " + shop.getId() + ": " + error.getMessage());
+                return 0;
+            }));
+        }
 
-            // Encontrar cualquier entidad aldeano en un radio corto
-            for (Entity e : shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), 2.0, 2.0, 2.0)) {
-                if (e.getType() == org.bukkit.entity.EntityType.VILLAGER) {
-                    // Si no es el actual del shop, lo removemos
-                    if (shop.getEntityUUID() == null || !e.getUniqueId().equals(shop.getEntityUUID())) {
-                        e.remove();
-                        removed++;
-                    }
-                }
+        CompletableFuture.allOf(repairs.toArray(new CompletableFuture[0])).thenRun(() -> {
+            int removed = repairs.stream().mapToInt(CompletableFuture::join).sum();
+            Runnable notify = () -> sender.sendMessage(plugin.getConfigManager().getMessage("fixtraders-success",
+                    "%removed%", String.valueOf(removed), "%fixed%", String.valueOf(repairs.size())));
+            if (sender instanceof Player player) {
+                com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTask(plugin, player, notify);
+            } else {
+                com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runGlobalTask(plugin, notify);
             }
-            
-            // Removemos nuestra entidad y la volvemos a spawnear limpiamente
-            plugin.getShopEntityListener().removeEntity(shop);
-            plugin.getShopEntityListener().spawnShop(shop);
-            fixed++;
-        }
-
-        if (sender instanceof Player player) {
-            player.sendMessage(plugin.getConfigManager().getMessage("fixtraders-success", "%removed%", String.valueOf(removed), "%fixed%", String.valueOf(fixed)));
-        } else {
-            sender.sendMessage(plugin.getConfigManager().getMessage("fixtraders-success", "%removed%", String.valueOf(removed), "%fixed%", String.valueOf(fixed)));
-        }
+        });
 
         return Command.SINGLE_SUCCESS;
     }

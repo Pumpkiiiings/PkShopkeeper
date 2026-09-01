@@ -6,13 +6,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
-import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.MerchantRecipe;
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
-import com.pumpkings.pkshopkeepers.shop.PkTradeOffer;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
 public class OpenCommand implements Command<CommandSourceStack> {
@@ -42,21 +37,7 @@ public class OpenCommand implements Command<CommandSourceStack> {
             return 0;
         }
 
-        Merchant merchant = Bukkit.createMerchant(shop.getName());
-        List<MerchantRecipe> recipes = new ArrayList<>();
-
-        for (PkTradeOffer offer : shop.getOffers()) {
-            MerchantRecipe recipe = new MerchantRecipe(offer.getResult(), Integer.MAX_VALUE);
-            recipe.addIngredient(offer.getItem1());
-            if (offer.getItem2() != null) {
-                recipe.addIngredient(offer.getItem2());
-            }
-            recipe.setExperienceReward(false);
-            recipes.add(recipe);
-        }
-
-        merchant.setRecipes(recipes);
-        target.openMerchant(merchant, true);
+        plugin.getShopEntityListener().openShop(target, shop);
 
         sender.sendMessage(plugin.getConfigManager().getMessage("opening-shop", 
                 "%id%", id, 

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.pumpkings'
-version = '1.5'
+version = '1.6'
 
 repositories {
     mavenCentral()
@@ -24,10 +24,13 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("de.oliver:FancyNpcs:2.9.2")
-    // Include all local jars in libs folder (like AxoNPCs)
-    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    // Use the shopkeepers JAR we compiled for migration hooks
-    compileOnly files('../Shopkeepers-master/build/Shopkeepers-2.28.0-SNAPSHOT.jar')
+    // Optional plugin APIs are kept in-repo so a clean checkout can compile.
+    compileOnly files('libs/AxoNPCs-3.0.8.jar', 'libs/ShopkeepersAPI.jar')
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.yaml:snakeyaml:2.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 def targetJavaVersion = 21
@@ -42,7 +45,12 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:deprecation']
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release.set(targetJavaVersion)
     }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

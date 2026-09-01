@@ -18,8 +18,10 @@ public class ReloadCommand implements Command<CommandSourceStack> {
     @Override
     public int run(CommandContext<CommandSourceStack> context) {
         CommandSender sender = context.getSource().getSender();
+        plugin.getShopEntityListener().prepareReload();
         plugin.getConfigManager().loadConfig();
         plugin.getShopManager().loadShops();
+        plugin.getShopEntityListener().spawnAllShops();
         sender.sendMessage(plugin.getConfigManager().getMessage("reloaded"));
         return Command.SINGLE_SUCCESS;
     }

@@ -138,32 +138,35 @@ public class CompareCommand implements Command<CommandSourceStack> {
             }
             
             if (invMeta.isUnbreakable() != shopMeta.isUnbreakable()) {
-                player.sendMessage("§c  - Diferencia: Etiqueta Irrompible (Unbreakable)");
-                player.sendMessage("§7    Tu ítem: §e" + invMeta.isUnbreakable() + " §7| Tienda: §e" + shopMeta.isUnbreakable());
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-unbreakable"));
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-unbreakable-values",
+                        "%you%", String.valueOf(invMeta.isUnbreakable()), "%shop%", String.valueOf(shopMeta.isUnbreakable())));
                 foundDifference = true;
             }
             
             if (!invMeta.getItemFlags().equals(shopMeta.getItemFlags())) {
-                player.sendMessage("§c  - Diferencia: Banderas ocultas (ItemFlags / HideFlags)");
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-item-flags"));
                 foundDifference = true;
             }
             
             if (invMeta.hasAttributeModifiers() != shopMeta.hasAttributeModifiers()) {
-                player.sendMessage("§c  - Diferencia: Modificadores de Atributos");
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-attribute-presence"));
                 foundDifference = true;
             } else if (invMeta.hasAttributeModifiers() && shopMeta.hasAttributeModifiers() && !invMeta.getAttributeModifiers().equals(shopMeta.getAttributeModifiers())) {
-                player.sendMessage("§c  - Diferencia: Valores de los Modificadores de Atributos");
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-attribute-values"));
                 foundDifference = true;
             }
             
             if (!invMeta.getPersistentDataContainer().getKeys().equals(shopMeta.getPersistentDataContainer().getKeys())) {
-                player.sendMessage("§c  - Diferencia: NBT/Datos de otros plugins (PersistentDataContainer)");
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-pdc"));
                 foundDifference = true;
             }
 
             if (!foundDifference) {
-                player.sendMessage(Component.text("  §c¡La diferencia está en Componentes 1.21 muy específicos!"));
-                player.sendMessage(Component.text("  §7(Usa §e/pks fix " + shopId + " " + (tradeIndex + 1) + " " + slotName.toLowerCase().replace(" ", "") + " §7para solucionarlo rápidamente)"));
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-components"));
+                player.sendMessage(plugin.getConfigManager().getMessageRaw("compare-fix-hint",
+                        "%id%", shopId, "%trade%", String.valueOf(tradeIndex + 1),
+                        "%slot%", slotName.toLowerCase().replace(" ", "")));
             }
         }
     }

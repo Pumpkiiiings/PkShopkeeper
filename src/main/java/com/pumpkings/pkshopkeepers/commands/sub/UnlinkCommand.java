@@ -37,9 +37,7 @@ public class UnlinkCommand implements Command<CommandSourceStack> {
         shop.setNpcId(null);
         plugin.getShopManager().saveShops();
         
-        com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runRegionTask(plugin, shop.getLocation(), () -> {
-            new com.pumpkings.pkshopkeepers.entity.ShopEntityListener(plugin, plugin.getShopManager()).spawnShop(shop);
-        });
+        plugin.getShopEntityListener().spawnShop(shop);
 
         sender.sendMessage(plugin.getConfigManager().getMessage("unlink-success", "%id%", shopId));
         

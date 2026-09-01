@@ -14,7 +14,6 @@ import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
 import com.pumpkings.pkshopkeepers.shop.PkTradeOffer;
 import com.pumpkings.pkshopkeepers.shop.ShopManager;
-import com.nisovin.shopkeepers.util.inventory.ItemUtils;
 
 public class LegacyMigrator {
 
@@ -47,7 +46,9 @@ public class LegacyMigrator {
                             java.lang.reflect.Method getProfession = obj.getClass().getMethod("getProfession");
                             Object prof = getProfession.invoke(obj);
                             if (prof != null) {
-                                newShop.setVillagerProfession(org.bukkit.entity.Villager.Profession.valueOf(prof.toString().toUpperCase()));
+                                org.bukkit.NamespacedKey key = org.bukkit.NamespacedKey.minecraft(prof.toString().toLowerCase());
+                                org.bukkit.entity.Villager.Profession profession = org.bukkit.Registry.VILLAGER_PROFESSION.get(key);
+                                if (profession != null) newShop.setVillagerProfession(profession);
                             }
                         } catch (Exception e) {}
                         
@@ -55,7 +56,9 @@ public class LegacyMigrator {
                             java.lang.reflect.Method getType = obj.getClass().getMethod("getVillagerType");
                             Object vType = getType.invoke(obj);
                             if (vType != null) {
-                                newShop.setVillagerType(org.bukkit.entity.Villager.Type.valueOf(vType.toString().toUpperCase()));
+                                org.bukkit.NamespacedKey key = org.bukkit.NamespacedKey.minecraft(vType.toString().toLowerCase());
+                                org.bukkit.entity.Villager.Type type = org.bukkit.Registry.VILLAGER_TYPE.get(key);
+                                if (type != null) newShop.setVillagerType(type);
                             }
                         } catch (Exception e) {}
                         
@@ -67,9 +70,9 @@ public class LegacyMigrator {
 
                     List<PkTradeOffer> pkOffers = new ArrayList<>();
                     for (TradeOffer offer : adminSk.getOffers()) {
-                        org.bukkit.inventory.ItemStack item1 = ItemUtils.asItemStack(offer.getItem1());
-                        org.bukkit.inventory.ItemStack item2 = offer.getItem2() != null ? ItemUtils.asItemStack(offer.getItem2()) : null;
-                        org.bukkit.inventory.ItemStack result = ItemUtils.asItemStack(offer.getResultItem());
+                        org.bukkit.inventory.ItemStack item1 = offer.getItem1().copy();
+                        org.bukkit.inventory.ItemStack item2 = offer.getItem2() != null ? offer.getItem2().copy() : null;
+                        org.bukkit.inventory.ItemStack result = offer.getResultItem().copy();
                         
                         pkOffers.add(new PkTradeOffer(item1, item2, result));
                     }

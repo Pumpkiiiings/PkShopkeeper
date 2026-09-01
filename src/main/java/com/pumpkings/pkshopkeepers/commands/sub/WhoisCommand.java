@@ -30,11 +30,12 @@ public class WhoisCommand implements Command<CommandSourceStack> {
 
         PkShop closestShop = null;
         double closestDist = Double.MAX_VALUE;
+        double radius = Math.max(0.0, plugin.getConfigManager().getDouble("settings.whois-radius", 5.0));
 
         for (PkShop shop : plugin.getShopManager().getShops()) {
             if (shop.getLocation() != null && shop.getLocation().getWorld().equals(player.getWorld())) {
                 double dist = shop.getLocation().distanceSquared(player.getLocation());
-                if (dist <= 25.0 && dist < closestDist) { // 5 blocks radius (5*5=25)
+                if (dist <= radius * radius && dist < closestDist) {
                     closestDist = dist;
                     closestShop = shop;
                 }
@@ -50,7 +51,7 @@ public class WhoisCommand implements Command<CommandSourceStack> {
                 .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(plugin.getConfigManager().getMessageRaw("whois-hover")));
             player.sendMessage(msg);
         } else {
-            player.sendMessage(plugin.getConfigManager().getMessage("whois-not-found"));
+            player.sendMessage(plugin.getConfigManager().getMessage("whois-not-found", "%radius%", String.valueOf(radius)));
         }
 
         return Command.SINGLE_SUCCESS;

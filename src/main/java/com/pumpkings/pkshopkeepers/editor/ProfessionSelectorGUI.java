@@ -27,6 +27,7 @@ public class ProfessionSelectorGUI implements Listener {
     }
 
     public void openMenu(Player player, PkShop shop) {
+        if (!plugin.getConfigManager().getBoolean("settings.allow-profession-change", true)) return;
         Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
         Inventory inv = Bukkit.createInventory(null, 27, title);
 
@@ -92,6 +93,7 @@ public class ProfessionSelectorGUI implements Listener {
         Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
         if (event.getView().title().equals(title)) {
             event.setCancelled(true);
+            if (!plugin.getConfigManager().getBoolean("settings.allow-profession-change", true)) return;
             Player player = (Player) event.getWhoClicked();
             PkShop shop = plugin.getShopManager().getEditingPlayers().get(player.getUniqueId());
             if (shop == null) return;
@@ -126,10 +128,7 @@ public class ProfessionSelectorGUI implements Listener {
 
     private void respawnShop(PkShop shop) {
         plugin.getShopManager().saveShops();
-        plugin.getServer().getScheduler().runTask(plugin, () -> {
-            plugin.getShopEntityListener().removeEntity(shop);
-            plugin.getShopEntityListener().spawnShop(shop);
-        });
+        plugin.getShopEntityListener().respawnShop(shop);
     }
 
     @EventHandler
@@ -137,7 +136,7 @@ public class ProfessionSelectorGUI implements Listener {
         Component title = plugin.getConfigManager().getMenuComponent("profession-selector.title");
         if (event.getView().title().equals(title)) {
             Player player = (Player) event.getPlayer();
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTaskLater(plugin, player, () -> {
                 if (player.getOpenInventory().getTopInventory().getSize() <= 5) {
                     plugin.getShopManager().getEditingPlayers().remove(player.getUniqueId());
                 }

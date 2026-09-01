@@ -6,7 +6,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import com.pumpkings.pkshopkeepers.shop.ShopManager;
 
@@ -91,17 +92,16 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncChatEvent event) {
         if (shopManager.getRenamingPlayers().containsKey(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
             com.pumpkings.pkshopkeepers.shop.PkShop shop = shopManager.getRenamingPlayers().remove(event.getPlayer().getUniqueId());
-            String newName = event.getMessage().replace("&", "§");
+            String newName = PlainTextComponentSerializer.plainText().serialize(event.message()).replace("&", "§");
             
-            getServer().getScheduler().runTask(this, () -> {
+            com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTask(this, event.getPlayer(), () -> {
                 shop.setName(newName);
                 shopManager.saveShops();
-                getServer().getPluginManager().callEvent(new org.bukkit.event.world.ChunkUnloadEvent(shop.getLocation().getChunk()));
-                getServer().getPluginManager().callEvent(new org.bukkit.event.world.ChunkLoadEvent(shop.getLocation().getChunk(), false));
+                shopEntityListener.respawnShop(shop);
                 event.getPlayer().sendMessage(configManager.getMessage("name-changed", "%name%", newName));
                 mainMenuGUI.openMenu(event.getPlayer(), shop);
             });
@@ -118,8 +118,13 @@ public class PkShopkeepers extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         if (shopManager != null) {
-            shopManager.saveShops();
+            shopManager.shutdown();
         }
+        if (shopEntityListener != null) {
+            shopEntityListener.clearRuntimeState();
+        }
+        com.pumpkings.pkshopkeepers.api.PkShopkeepersAPI.shutdown();
+        instance = null;
     }
 
     public static PkShopkeepers getInstance() {

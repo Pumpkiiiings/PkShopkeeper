@@ -25,11 +25,12 @@ public class RemoveCommand implements Command<CommandSourceStack> {
         }
 
         int count = 0;
+        double removeRadius = Math.max(0.0, plugin.getConfigManager().getDouble("settings.remove-radius", 3.0));
         for (PkShop shop : new ArrayList<>(plugin.getShopManager().getShops())) {
             if (shop.getLocation() != null && shop.getLocation().getWorld().equals(player.getWorld())) {
-                if (shop.getLocation().distance(player.getLocation()) <= 3.0) {
+                if (shop.getLocation().distanceSquared(player.getLocation()) <= removeRadius * removeRadius) {
+                    plugin.getShopEntityListener().removeEntity(shop);
                     plugin.getShopManager().removeShop(shop.getId());
-                    plugin.getServer().getPluginManager().callEvent(new org.bukkit.event.world.ChunkUnloadEvent(shop.getLocation().getChunk()));
                     count++;
                 }
             }

@@ -19,18 +19,17 @@ public class PkShopkeepersAPI {
 
     public static PkShopkeepersAPI getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("PkShopkeepersAPI no ha sido inicializado aún.");
+            throw new IllegalStateException("PkShopkeepersAPI has not been initialized yet.");
         }
         return instance;
     }
 
+    public static void shutdown() {
+        instance = null;
+    }
+
     public PkShop getShop(String id) {
-        for (PkShop shop : plugin.getShopManager().getShops()) {
-            if (shop.getId().equals(id)) {
-                return shop;
-            }
-        }
-        return null;
+        return plugin.getShopManager().getShop(id);
     }
 
     public PkShop getShopByName(String name) {
@@ -63,18 +62,23 @@ public class PkShopkeepersAPI {
     }
 
     public boolean createShop(Location loc, String name, EntityType type) {
+        if (loc == null || loc.getWorld() == null || type == null || !type.isAlive() || !type.isSpawnable()) {
+            return false;
+        }
         PkShop newShop = new PkShop(plugin.getShopManager().getNextId());
         newShop.setLocation(loc);
-        newShop.setName(name);
+        newShop.setName(name == null || name.isBlank() ? "Shop" : name);
         newShop.setEntityType(type);
         plugin.getShopManager().addShop(newShop);
         plugin.getShopManager().saveShops();
+        plugin.getShopEntityListener().spawnShop(newShop);
         return true;
     }
 
     public boolean deleteShop(String shopId) {
         PkShop shop = getShop(shopId);
         if (shop != null) {
+            plugin.getShopEntityListener().removeEntity(shop);
             plugin.getShopManager().removeShop(shopId);
             return true;
         }

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.EntityType;
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
-import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
 public class CreateCommand implements Command<CommandSourceStack> {
@@ -32,32 +31,34 @@ public class CreateCommand implements Command<CommandSourceStack> {
             // Optional argument not provided
         }
 
-        PkShop newShop = new PkShop(UUID.randomUUID().toString());
-        newShop.setName("New Shop");
-        newShop.setLocation(player.getLocation());
+        int maxShops = plugin.getConfigManager().getInt("settings.max-shops-per-player", -1);
+        if (maxShops >= 0 && plugin.getShopManager().countShopsOwnedBy(player.getUniqueId()) >= maxShops) {
+            player.sendMessage(plugin.getConfigManager().getMessage("max-shops-reached", "%max%", String.valueOf(maxShops)));
+            return 0;
+        }
 
         try {
             org.bukkit.entity.EntityType type = EntityType.valueOf(typeStr.toUpperCase());
             
             java.util.List<String> allowed = plugin.getConfigManager().getStringList("settings.enabled-living-shops");
-            if (!allowed.contains(type.name())) {
+            boolean configured = allowed.isEmpty() || allowed.stream().anyMatch(value -> value.equalsIgnoreCase(type.name()));
+            if (!configured || !type.isAlive() || !type.isSpawnable()) {
                 player.sendMessage(plugin.getConfigManager().getMessage("invalid-entity"));
-                newShop.setEntityType(EntityType.VILLAGER);
-            } else {
-                newShop.setEntityType(type);
+                return 0;
             }
+            PkShop newShop = new PkShop(plugin.getShopManager().getNextId());
+            newShop.setName(plugin.getConfigManager().getRawString("settings.default-shop-name", "New Shop"));
+            newShop.setLocation(player.getLocation());
+            newShop.setOwnerUUID(player.getUniqueId());
+            newShop.setEntityType(type);
+
+            plugin.getShopManager().addShop(newShop);
+            plugin.getShopManager().saveShops();
+            plugin.getShopEntityListener().spawnShop(newShop);
         } catch (Exception e) {
             player.sendMessage(plugin.getConfigManager().getMessage("invalid-entity"));
-            newShop.setEntityType(EntityType.VILLAGER);
+            return 0;
         }
-
-        plugin.getShopManager().addShop(newShop);
-        plugin.getShopManager().saveShops();
-
-        // Spawn it on the region thread
-        com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runRegionTask(plugin, player.getLocation(), () -> {
-            new com.pumpkings.pkshopkeepers.entity.ShopEntityListener(plugin, plugin.getShopManager()).spawnShop(newShop);
-        });
 
         player.sendMessage(plugin.getConfigManager().getMessage("shop-created"));
         return Command.SINGLE_SUCCESS;

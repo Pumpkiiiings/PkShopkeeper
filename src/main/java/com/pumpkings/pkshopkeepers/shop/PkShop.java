@@ -1,8 +1,8 @@
 package com.pumpkings.pkshopkeepers.shop;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,17 +13,18 @@ import org.bukkit.entity.Villager.Profession;
 
 public class PkShop {
 
-    private String id;
-    private String name;
-    private Location location;
-    private UUID entityUUID;
-    private org.bukkit.entity.EntityType entityType = org.bukkit.entity.EntityType.VILLAGER;
-    private boolean baby = false;
-    private org.bukkit.entity.Villager.Profession villagerProfession = org.bukkit.entity.Villager.Profession.NONE;
-    private org.bukkit.entity.Villager.Type villagerType = org.bukkit.entity.Villager.Type.PLAINS;
-    private int villagerLevel = 1;
-    private String npcId = null;
-    private List<PkTradeOffer> offers = new ArrayList<>();
+    private volatile String id;
+    private volatile String name = "Shop";
+    private volatile Location location;
+    private volatile UUID entityUUID;
+    private volatile UUID ownerUUID;
+    private volatile org.bukkit.entity.EntityType entityType = org.bukkit.entity.EntityType.VILLAGER;
+    private volatile boolean baby = false;
+    private volatile org.bukkit.entity.Villager.Profession villagerProfession = org.bukkit.entity.Villager.Profession.NONE;
+    private volatile org.bukkit.entity.Villager.Type villagerType = org.bukkit.entity.Villager.Type.PLAINS;
+    private volatile int villagerLevel = 1;
+    private volatile String npcId = null;
+    private List<PkTradeOffer> offers = new CopyOnWriteArrayList<>();
 
     public PkShop(String id) {
         this.id = id;
@@ -32,9 +33,8 @@ public class PkShop {
     public PkShop(String id, ConfigurationSection section) {
         this.id = id;
         this.name = section.getString("name", "Shop");
-        if (section.contains("entityUUID")) {
-            this.entityUUID = UUID.fromString(section.getString("entityUUID"));
-        }
+        this.entityUUID = parseUuid(section.getString("entityUUID"));
+        this.ownerUUID = parseUuid(section.getString("ownerUUID"));
         
         try {
             this.entityType = org.bukkit.entity.EntityType.valueOf(section.getString("entityType", "VILLAGER"));
@@ -84,6 +84,7 @@ public class PkShop {
         if (offersSection != null) {
             for (String key : offersSection.getKeys(false)) {
                 ConfigurationSection offerSec = offersSection.getConfigurationSection(key);
+                if (offerSec == null) continue;
                 ItemStack item1 = offerSec.getItemStack("item1");
                 ItemStack item2 = offerSec.getItemStack("item2");
                 ItemStack result = offerSec.getItemStack("result");
@@ -94,15 +95,31 @@ public class PkShop {
         }
     }
 
+    private static UUID parseUuid(String value) {
+        if (value == null || value.isBlank()) return null;
+        try {
+            return UUID.fromString(value);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+    }
+
     public void saveToConfig(ConfigurationSection section) {
         section.set("name", name);
         if (entityUUID != null) {
             section.set("entityUUID", entityUUID.toString());
+        } else {
+            section.set("entityUUID", null);
+        }
+        if (ownerUUID != null) {
+            section.set("ownerUUID", ownerUUID.toString());
+        } else {
+            section.set("ownerUUID", null);
         }
         section.set("entityType", entityType.name());
         section.set("baby", baby);
-        section.set("villagerProfession", villagerProfession.name());
-        section.set("villagerType", villagerType.name());
+        section.set("villagerProfession", villagerProfession.getKey().getKey());
+        section.set("villagerType", villagerType.getKey().getKey());
         section.set("villagerLevel", villagerLevel);
         
         if (npcId != null) {
@@ -143,10 +160,12 @@ public class PkShop {
     public void setName(String name) { this.name = name; }
     public String getNpcId() { return npcId; }
     public void setNpcId(String npcId) { this.npcId = npcId; }
-    public Location getLocation() { return location; }
-    public void setLocation(Location location) { this.location = location; }
+    public Location getLocation() { return location == null ? null : location.clone(); }
+    public void setLocation(Location location) { this.location = location == null ? null : location.clone(); }
     public UUID getEntityUUID() { return entityUUID; }
     public void setEntityUUID(UUID entityUUID) { this.entityUUID = entityUUID; }
+    public UUID getOwnerUUID() { return ownerUUID; }
+    public void setOwnerUUID(UUID ownerUUID) { this.ownerUUID = ownerUUID; }
     public org.bukkit.entity.EntityType getEntityType() { return entityType; }
     public void setEntityType(org.bukkit.entity.EntityType entityType) { this.entityType = entityType; }
     public boolean isBaby() { return baby; }
@@ -158,5 +177,5 @@ public class PkShop {
     public int getVillagerLevel() { return villagerLevel; }
     public void setVillagerLevel(int villagerLevel) { this.villagerLevel = villagerLevel; }
     public List<PkTradeOffer> getOffers() { return offers; }
-    public void setOffers(List<PkTradeOffer> offers) { this.offers = offers; }
+    public void setOffers(List<PkTradeOffer> offers) { this.offers = new CopyOnWriteArrayList<>(offers); }
 }

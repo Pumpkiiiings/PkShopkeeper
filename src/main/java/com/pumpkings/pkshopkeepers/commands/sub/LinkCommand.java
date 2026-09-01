@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.pumpkings.pkshopkeepers.PkShopkeepers;
 import com.pumpkings.pkshopkeepers.shop.PkShop;
-import org.bukkit.Bukkit;
 
 @SuppressWarnings("UnstableApiUsage")
 public class LinkCommand implements Command<CommandSourceStack> {
@@ -37,11 +36,7 @@ public class LinkCommand implements Command<CommandSourceStack> {
         }
 
         if (shop.getEntityUUID() != null) {
-            org.bukkit.entity.Entity oldEntity = Bukkit.getEntity(shop.getEntityUUID());
-            if (oldEntity != null) {
-                oldEntity.remove();
-            }
-            shop.setEntityUUID(null);
+            plugin.getShopEntityListener().removeEntity(shop);
         }
 
         shop.setNpcId(npcId);

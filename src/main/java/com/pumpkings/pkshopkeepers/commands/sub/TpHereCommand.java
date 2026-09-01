@@ -39,11 +39,7 @@ public class TpHereCommand implements Command<CommandSourceStack> {
             return 0;
         }
 
-        targetShop.setLocation(player.getLocation());
-        plugin.getShopManager().saveShops();
-        
-        plugin.getShopEntityListener().removeEntity(targetShop);
-        plugin.getShopEntityListener().spawnShop(targetShop);
+        plugin.getShopEntityListener().moveShop(targetShop, player.getLocation());
         
         player.sendMessage(plugin.getConfigManager().getMessage("tphere-success", "%name%", targetShop.getName()));
         

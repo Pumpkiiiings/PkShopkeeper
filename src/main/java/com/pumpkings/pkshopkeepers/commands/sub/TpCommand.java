@@ -44,8 +44,13 @@ public class TpCommand implements Command<CommandSourceStack> {
             return 0;
         }
 
-        player.teleport(targetShop.getLocation());
-        player.sendMessage(plugin.getConfigManager().getMessage("tp-success", "%name%", targetShop.getName()));
+        PkShop resolvedShop = targetShop;
+        player.teleportAsync(targetShop.getLocation()).thenAccept(success -> {
+            if (success) {
+                com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTask(plugin, player,
+                        () -> player.sendMessage(plugin.getConfigManager().getMessage("tp-success", "%name%", resolvedShop.getName())));
+            }
+        });
 
         return 1;
     }

@@ -66,8 +66,7 @@ public class VillagerLevelGUI implements Listener {
         if (slot >= 11 && slot <= 15) {
             int level = slot - 10;
             shop.setVillagerLevel(level);
-            plugin.getShopEntityListener().removeEntity(shop);
-            plugin.getShopEntityListener().spawnShop(shop);
+            plugin.getShopEntityListener().respawnShop(shop);
             plugin.getShopManager().saveShops();
             player.sendMessage(plugin.getConfigManager().getMessage("villager-level-changed", "%level%", String.valueOf(level)));
             plugin.getMainMenuGUI().openMenu(player, shop);

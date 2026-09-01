@@ -34,10 +34,15 @@ public class MainMenuGUI implements Listener {
 
         inv.setItem(10, createItem(Material.CHEST, plugin.getConfigManager().getMenuComponent("main-menu.btn-edit-trades"), plugin.getConfigManager().getGuiStringList("main-menu.btn-edit-trades-lore").toArray(new String[0])));
         inv.setItem(11, createItem(Material.NAME_TAG, plugin.getConfigManager().getMenuComponent("main-menu.btn-change-name"), plugin.getConfigManager().getGuiStringList("main-menu.btn-change-name-lore").stream().map(s -> s.replace("%name%", shop.getName())).toArray(String[]::new)));
-        inv.setItem(12, createItem(Material.ZOMBIE_HEAD, plugin.getConfigManager().getMenuComponent("main-menu.btn-change-type"), plugin.getConfigManager().getGuiStringList("main-menu.btn-change-type-lore").stream().map(s -> s.replace("%type%", shop.getEntityType().name()).replace("%baby%", shop.isBaby() ? "Sí" : "No")).toArray(String[]::new)));
+        String babyState = plugin.getConfigManager().getRawString(
+                shop.isBaby() ? "messages.baby-state-on" : "messages.baby-state-off", shop.isBaby() ? "Yes" : "No");
+        inv.setItem(12, createItem(Material.ZOMBIE_HEAD, plugin.getConfigManager().getMenuComponent("main-menu.btn-change-type"), plugin.getConfigManager().getGuiStringList("main-menu.btn-change-type-lore").stream().map(s -> s.replace("%type%", shop.getEntityType().name()).replace("%baby%", babyState)).toArray(String[]::new)));
         
+        if (shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER
+                && plugin.getConfigManager().getBoolean("settings.allow-villager-type-change", true)) {
+            inv.setItem(14, createItem(Material.OAK_SAPLING, plugin.getConfigManager().getMenuComponent("main-menu.btn-villager-type"), plugin.getConfigManager().getGuiStringList("main-menu.btn-villager-type-lore").stream().map(s -> s.replace("%type%", shop.getVillagerType().getKey().getKey().toUpperCase())).toArray(String[]::new)));
+        }
         if (shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER) {
-            inv.setItem(14, createItem(Material.OAK_SAPLING, plugin.getConfigManager().getMenuComponent("main-menu.btn-villager-type"), plugin.getConfigManager().getGuiStringList("main-menu.btn-villager-type-lore").stream().map(s -> s.replace("%type%", shop.getVillagerType().name())).toArray(String[]::new)));
             inv.setItem(15, createItem(Material.EMERALD, plugin.getConfigManager().getMenuComponent("main-menu.btn-villager-level"), plugin.getConfigManager().getGuiStringList("main-menu.btn-villager-level-lore").stream().map(s -> s.replace("%level%", String.valueOf(shop.getVillagerLevel()))).toArray(String[]::new)));
         }
         
@@ -81,16 +86,15 @@ public class MainMenuGUI implements Listener {
             plugin.getShopManager().getRenamingPlayers().put(player.getUniqueId(), shop);
         } else if (slot == 12) {
             plugin.getEntitySelectorGUI().openMenu(player, shop);
-        } else if (slot == 14 && shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER) {
+        } else if (slot == 14 && shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER
+                && plugin.getConfigManager().getBoolean("settings.allow-villager-type-change", true)) {
             plugin.getVillagerTypeGUI().openMenu(player, shop);
         } else if (slot == 15 && shop.getEntityType() == org.bukkit.entity.EntityType.VILLAGER) {
             plugin.getVillagerLevelGUI().openMenu(player, shop);
         } else if (slot == 16) {
             player.closeInventory();
+            plugin.getShopEntityListener().removeEntity(shop);
             plugin.getShopManager().removeShop(shop.getId());
-            plugin.getServer().getScheduler().runTask(plugin, () -> {
-                plugin.getShopEntityListener().removeEntity(shop);
-            });
             player.sendMessage(plugin.getConfigManager().getMessage("shop-deleted"));
         }
     }
@@ -106,7 +110,7 @@ public class MainMenuGUI implements Listener {
         Component expectedTitle = plugin.getConfigManager().parseString(titleStr);
         
         if (event.getView().title().equals(expectedTitle)) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            com.pumpkings.pkshopkeepers.utils.FoliaScheduler.runEntityTaskLater(plugin, player, () -> {
                 if (player.getOpenInventory().getTopInventory().getSize() <= 5) {
                     plugin.getShopManager().getEditingPlayers().remove(player.getUniqueId());
                 }

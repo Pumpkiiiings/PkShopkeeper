@@ -105,6 +105,14 @@ public class ConfigManager {
     public boolean getBoolean(String path, boolean def) {
         return config.getBoolean(path, def);
     }
+
+    public int getInt(String path, int def) {
+        return config.getInt(path, def);
+    }
+
+    public double getDouble(String path, double def) {
+        return config.getDouble(path, def);
+    }
     
     public String getRawString(String path, String def) {
         return config.getString(path, def);
